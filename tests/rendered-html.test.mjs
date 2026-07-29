@@ -33,10 +33,10 @@ test("server-renders the speaking practice app shell", async () => {
 
   const html = await response.text();
   assert.match(html, /thinkQuick/);
-  assert.match(html, /Off the cuff/);
+  assert.match(html, /Экспромт/);
   assert.match(html, /Deep research/);
-  assert.match(html, /Spin again/);
-  assert.match(html, /Start 10 min research/);
+  assert.match(html, /Крутить/);
+  assert.match(html, /Общее/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|SkeletonPreview/);
 });
 
@@ -49,10 +49,11 @@ test("removes starter preview assets from the finished site", async () => {
   ]);
 
   assert.match(page, /"use client"/);
-  assert.match(page, /const TOPICS/);
+  assert.match(page, /const GROUPS/);
   assert.match(layout, /lang="ru"/);
   assert.match(layout, /thinkQuick \| Speaking practice/);
-  assert.match(css, /unprompted-page/);
+  assert.match(css, /\.reel-phrase/);
+  assert.match(css, /\.timer-overlay/);
   assert.doesNotMatch(page, /codex-preview|_sites-preview|SkeletonPreview/);
   assert.doesNotMatch(layout, /Starter Project|codex-preview|_sites-preview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
