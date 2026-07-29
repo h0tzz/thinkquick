@@ -1,0 +1,68 @@
+.stage-body {
+  gap: clamp(1.35rem, 3.6vh, 2.6rem);
+}
+
+.reel {
+  min-height: clamp(15.5rem, 34vw, 23rem);
+  padding-inline: clamp(0rem, 2vw, 1rem);
+}
+
+.reel-phrase {
+  width: min(100%, 18ch);
+  max-width: min(100%, 18ch);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  text-wrap: balance;
+}
+
+.reel-phrase.is-long {
+  width: min(100%, 19ch);
+  max-width: min(100%, 19ch);
+  font-size: clamp(2.65rem, 8vw, 4.65rem);
+  line-height: 1.06;
+}
+
+.reel-phrase.is-extra-long {
+  width: min(100%, 23ch);
+  max-width: min(100%, 23ch);
+  font-size: clamp(2rem, 5.9vw, 3.6rem);
+  line-height: 1.12;
+}
+
+.actions {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(0.25rem, 2vh, 1.25rem);
+}
+
+@media (max-width: 720px) {
+  .brand {
+    margin-bottom: clamp(2.25rem, 7vh, 4rem);
+  }
+
+  .stage-body {
+    gap: 1.2rem;
+  }
+
+  .reel {
+    min-height: clamp(16.5rem, 46vh, 26rem);
+  }
+
+  .reel-phrase {
+    width: min(100%, 13ch);
+    max-width: min(100%, 13ch);
+    font-size: clamp(2.7rem, 14vw, 4.8rem);
+  }
+
+  .reel-phrase.is-long {
+    width: min(100%, 16ch);
+    max-width: min(100%, 16ch);
+    font-size: clamp(2.15rem, 10.5vw, 3.7rem);
+  }
+
+  .reel-phrase.is-extra-long {
+    width: min(100%, 20ch);
+    max-width: min(100%, 20ch);
+    font-size: clamp(1.65rem, 8.2vw, 2.8rem);
+  }
+}
