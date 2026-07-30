@@ -1370,6 +1370,9 @@ export default function Home() {
             <div className="roulette-window">
               <span className="roulette-edge is-top" aria-hidden="true" />
               <span className="roulette-edge is-bottom" aria-hidden="true" />
+              <span className="roulette-marker is-left" aria-hidden="true" />
+              <span className="roulette-marker is-right" aria-hidden="true" />
+              <span className="roulette-sheen" aria-hidden="true" />
               <span className="reel-ghost is-prev" aria-hidden="true">
                 {previousTopic}
               </span>
