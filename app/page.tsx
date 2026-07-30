@@ -492,12 +492,14 @@ function timerProgress(remaining: number, total: number) {
   return Math.min(1, Math.max(0, 1 - remaining / total));
 }
 
-function topicLengthClass(topic: string) {
-  if (topic.length > 42) {
+function topicLengthClass(topic: string | null | undefined) {
+  const length = topic?.length ?? 0;
+
+  if (length > 42) {
     return "is-extra-long";
   }
 
-  if (topic.length > 24) {
+  if (length > 24) {
     return "is-long";
   }
 
@@ -1141,7 +1143,7 @@ export default function Home() {
       const step = Math.min(plan.totalSteps, Math.floor(eased * plan.totalSteps));
       const index = (startIndex + step) % activeTopics.length;
 
-      setDisplayTopic(activeTopics[index]);
+      setDisplayTopic(activeTopics[index] ?? activeTopics[0] ?? "");
       setReelKey((key) => key + 1);
 
       if (raw < 1) {
@@ -1150,8 +1152,9 @@ export default function Home() {
       }
 
       topicIndexRef.current = plan.landIndex;
-      setDisplayTopic(activeTopics[plan.landIndex]);
-      setSelectedTopic(activeTopics[plan.landIndex]);
+      const landedTopic = activeTopics[plan.landIndex] ?? activeTopics[0] ?? "";
+      setDisplayTopic(landedTopic);
+      setSelectedTopic(landedTopic);
       setIsSpinning(false);
       setIsLanded(true);
       playFinish();
@@ -1302,7 +1305,7 @@ export default function Home() {
               className={`reel-phrase ${topicLengthClass(displayTopic)}`}
               key={reelKey}
             >
-              {displayTopic}
+              {displayTopic || "Тема"}
             </p>
             <p className="sr-only" aria-live="polite">
               {selectedTopic ? `Твоя тема: ${selectedTopic}` : ""}
