@@ -357,17 +357,17 @@ const DEEP_GROUP = getGroup(DEEP_RESEARCH_ID);
 
 const MODES = [
   {
-    id: "off-the-cuff" as const,
-    label: "Экспромт",
-    emoji: "🧠",
-    blurb: "Минимум подготовки. Думай быстро, пока говоришь.",
-  },
-  {
     id: "deep-research" as const,
     label: "Deep research",
     emoji: "🔍",
     blurb:
       "Крути тему, ставь таймер на research, потом запускай речь, когда будешь готов.",
+  },
+  {
+    id: "off-the-cuff" as const,
+    label: "Экспромт",
+    emoji: "🧠",
+    blurb: "Минимум подготовки. Думай быстро, пока говоришь.",
   },
 ];
 
@@ -1300,8 +1300,7 @@ export default function Home() {
 
       <header className="brand challenge-brand">
         <div className="brand-lockup">
-          <p className="brand-kicker">случайная тема на время</p>
-          <h1 className="brand-mark">thinkQuick</h1>
+          <h1 className="brand-mark">Спин</h1>
         </div>
       </header>
 

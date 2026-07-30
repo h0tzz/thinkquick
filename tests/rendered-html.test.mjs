@@ -32,9 +32,8 @@ test("server-renders the speaking practice app shell", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /thinkQuick/);
+  assert.match(html, /Спин/);
   assert.match(html, /Research\. Потом речь/);
-  assert.match(html, /случайная тема на время/);
   assert.match(html, /Экспромт/);
   assert.match(html, /Deep research/);
   assert.match(html, /Крутить тему/);
