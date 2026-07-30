@@ -33,9 +33,9 @@ test("server-renders the speaking practice app shell", async () => {
 
   const html = await response.text();
   assert.match(html, /Спин/);
-  assert.match(html, /Research\. Потом речь/);
+  assert.match(html, /Сначала разбор\. Потом речь/);
   assert.match(html, /Экспромт/);
-  assert.match(html, /Deep research/);
+  assert.match(html, /С разбором/);
   assert.match(html, /Крутить тему/);
   assert.match(html, /Гедонистическая адаптация/);
   assert.doesNotMatch(html, /REC challenge|codex-preview|react-loading-skeleton|SkeletonPreview/);

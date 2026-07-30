@@ -52,7 +52,7 @@ const GROUPS: TopicGroup[] = [
   },
   {
     id: "deep-research",
-    label: "Deep research",
+    label: "С разбором",
     emoji: "🔎",
     topics: [
       "Гедонистическая адаптация",
@@ -358,10 +358,10 @@ const DEEP_GROUP = getGroup(DEEP_RESEARCH_ID);
 const MODES = [
   {
     id: "deep-research" as const,
-    label: "Deep research",
+    label: "С разбором",
     emoji: "🔍",
     blurb:
-      "Крути тему, ставь таймер на research, потом запускай речь, когда будешь готов.",
+      "Крути тему, разбирайся в ней по таймеру, потом объясняй своими словами.",
   },
   {
     id: "off-the-cuff" as const,
@@ -669,8 +669,8 @@ function SettingsDialog({
                 onChangeMinutes={(minutes) => onChangeSpeech(minutes * 60)}
               />
               <DurationField
-                hint="Только для deep research"
-                label="Research"
+                hint="Только для режима с разбором"
+                label="Разбор"
                 max={60}
                 min={1}
                 minutes={Math.round(researchSeconds / 60)}
@@ -984,13 +984,13 @@ export default function Home() {
   const researchClock = formatDigits(researchSeconds);
   const challengeTitle =
     mode === "deep-research"
-      ? "Research. Потом речь."
+      ? "Сначала разбор. Потом речь."
       : "Говори сразу. Без подготовки.";
   const challengeSubtitle =
     mode === "deep-research"
-      ? `${formatDuration(researchSeconds)} на разбор. Затем ${formatDuration(
+      ? `${formatDuration(researchSeconds)} на разбор темы. Потом ${formatDuration(
           speechSeconds,
-        )} на объяснение без шпаргалок.`
+        )} объясняешь своими словами.`
       : `Крути тему и объясняй её ${formatDuration(speechSeconds)} без паузы на разбор.`;
   const previousTopic = topicAtOffset(activeTopics, displayTopic, -1);
   const nextTopic = topicAtOffset(activeTopics, displayTopic, 1);
@@ -1273,16 +1273,16 @@ export default function Home() {
 
   const timerLabel =
     timerState === "research"
-      ? "Research timer"
+      ? "Таймер разбора"
       : timerState === "ready"
         ? "Готов говорить"
         : "Таймер речи";
 
   const timerStatus =
     timerState === "research"
-      ? "Research."
+      ? "Разбираемся."
       : timerState === "ready"
-        ? "Research завершён."
+        ? "Разбор завершён."
         : timerState === "done"
           ? "Время."
           : "Говори.";
@@ -1291,7 +1291,7 @@ export default function Home() {
     timerState === "ready"
       ? `Начать речь ${speechClock}`
       : mode === "deep-research"
-        ? `Research ${researchClock}`
+        ? `Разбор ${researchClock}`
         : `Старт ${speechClock}`;
 
   return (
@@ -1322,7 +1322,7 @@ export default function Home() {
         <div className="challenge-hero">
           <div className="challenge-copy">
             <p className="challenge-kicker">
-              {mode === "deep-research" ? "deep research" : "экспромт"}
+              {mode === "deep-research" ? "с разбором" : "экспромт"}
             </p>
             <h2 className="challenge-title">{challengeTitle}</h2>
             <p className="challenge-subtitle">{challengeSubtitle}</p>
@@ -1332,7 +1332,7 @@ export default function Home() {
             <span className="challenge-clock-label">на речь</span>
             <strong>{speechClock}</strong>
             {mode === "deep-research" ? (
-              <span className="challenge-clock-note">research {researchClock}</span>
+              <span className="challenge-clock-note">разбор {researchClock}</span>
             ) : (
               <span className="challenge-clock-note">без подготовки</span>
             )}
@@ -1439,7 +1439,7 @@ export default function Home() {
         >
           <div className="timer-overlay-inner">
             {selectedTopic ? <p className="timer-topic">{selectedTopic}</p> : null}
-            {isResearchTimer ? <p className="timer-phase">Исследование</p> : null}
+            {isResearchTimer ? <p className="timer-phase">Разбор</p> : null}
 
             {showSpeechStages ? (
               <ol className="speech-stages" aria-label="Дуга речи">
@@ -1474,7 +1474,7 @@ export default function Home() {
             <div className="timer-actions">
               {isResearchTimer ? (
                 <button className="btn primary" onClick={finishResearch} type="button">
-                  Закончить research
+                  Закончить разбор
                 </button>
               ) : null}
               {timerState === "ready" ? (
