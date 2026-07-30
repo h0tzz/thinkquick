@@ -997,12 +997,12 @@ export default function Home() {
   const spinStageLabel =
     isSpinning
       ? spinStage === "locking"
-        ? "замедляется"
+        ? "сейчас выпадет"
         : spinStage === "cruising"
-          ? "крутится"
-          : "старт"
+          ? "мелькают темы"
+          : "поехали"
       : selectedTopic
-        ? "тема выбрана"
+        ? "вот твоя тема"
         : "нажми на рулетку";
 
   useEffect(() => {
