@@ -17,6 +17,14 @@ type ModeId = "off-the-cuff" | "deep-research" | "debate";
 type DebatePositionId = "pro" | "con";
 type TimerState = "idle" | "research" | "ready" | "speech" | "done";
 type SpinStage = "idle" | "accelerating" | "cruising" | "locking" | "landed";
+type AudioNote = {
+  frequency: number;
+  at: number;
+  duration: number;
+  peak: number;
+  type?: OscillatorType;
+  glideTo?: number;
+};
 
 type TopicGroup = {
   id: string;
@@ -1140,81 +1148,122 @@ export default function Home() {
     };
   }, []);
 
-  const playNotes = useCallback(
-    (notes: number[]) => {
+  const getAudioContext = useCallback(() => {
+    if (muted || typeof window === "undefined") {
+      return null;
+    }
+
+    const AudioContextCtor =
+      window.AudioContext ??
+      (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+
+    if (!AudioContextCtor) {
+      return null;
+    }
+
+    const context = audioRef.current ?? new AudioContextCtor();
+    audioRef.current = context;
+    void context.resume?.();
+
+    return context;
+  }, [muted]);
+
+  const playChime = useCallback(
+    (notes: AudioNote[]) => {
       if (muted || typeof window === "undefined") {
         return;
       }
 
-      const AudioContextCtor =
-        window.AudioContext ??
-        (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-
-      if (!AudioContextCtor) {
+      const context = getAudioContext();
+      if (!context) {
         return;
       }
 
-      const context = audioRef.current ?? new AudioContextCtor();
-      audioRef.current = context;
-      void context.resume?.();
-      const gain = context.createGain();
-      gain.gain.value = 0.16;
-      gain.connect(context.destination);
+      const master = context.createGain();
+      const filter = context.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.value = 5200;
+      filter.Q.value = 0.5;
+      master.gain.value = 0.72;
+      master.connect(filter);
+      filter.connect(context.destination);
 
-      notes.forEach((frequency, index) => {
+      notes.forEach((note) => {
+        const start = context.currentTime + note.at;
+        const end = start + note.duration;
         const oscillator = context.createOscillator();
         const noteGain = context.createGain();
-        oscillator.frequency.value = frequency;
-        oscillator.type = "triangle";
-        noteGain.gain.setValueAtTime(0.0001, context.currentTime + index * 0.08);
-        noteGain.gain.exponentialRampToValueAtTime(0.36, context.currentTime + index * 0.08 + 0.01);
-        noteGain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + index * 0.08 + 0.28);
+
+        oscillator.type = note.type ?? "sine";
+        oscillator.frequency.setValueAtTime(note.frequency, start);
+
+        if (note.glideTo) {
+          oscillator.frequency.exponentialRampToValueAtTime(note.glideTo, end);
+        }
+
+        noteGain.gain.setValueAtTime(0.0001, start);
+        noteGain.gain.exponentialRampToValueAtTime(note.peak, start + 0.014);
+        noteGain.gain.exponentialRampToValueAtTime(0.0001, end);
         oscillator.connect(noteGain);
-        noteGain.connect(gain);
-        oscillator.start(context.currentTime + index * 0.08);
-        oscillator.stop(context.currentTime + index * 0.08 + 0.3);
+        noteGain.connect(master);
+        oscillator.start(start);
+        oscillator.stop(end + 0.02);
       });
     },
-    [muted],
+    [getAudioContext, muted],
   );
 
-  const playSpin = useCallback(() => playNotes([523.25, 659.25, 783.99]), [playNotes]);
-  const playFinish = useCallback(() => playNotes([392, 523.25, 659.25, 784]), [playNotes]);
+  const playSpin = useCallback(
+    () =>
+      playChime([
+        { frequency: 392, at: 0, duration: 0.14, peak: 0.11, type: "sine" },
+        { frequency: 523.25, at: 0.055, duration: 0.16, peak: 0.1, type: "triangle" },
+        { frequency: 659.25, at: 0.12, duration: 0.22, peak: 0.09, type: "sine" },
+      ]),
+    [playChime],
+  );
+  const playFinish = useCallback(
+    () =>
+      playChime([
+        { frequency: 523.25, at: 0, duration: 0.22, peak: 0.12, type: "sine" },
+        { frequency: 659.25, at: 0.07, duration: 0.24, peak: 0.11, type: "triangle" },
+        { frequency: 783.99, at: 0.14, duration: 0.28, peak: 0.1, type: "sine" },
+        { frequency: 1046.5, at: 0.25, duration: 0.42, peak: 0.07, type: "sine" },
+      ]),
+    [playChime],
+  );
   const playTick = useCallback(
     (progressValue: number) => {
-      if (muted || typeof window === "undefined") {
+      const context = getAudioContext();
+      if (!context) {
         return;
       }
-
-      const AudioContextCtor =
-        window.AudioContext ??
-        (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-
-      if (!AudioContextCtor) {
-        return;
-      }
-
-      const context = audioRef.current ?? new AudioContextCtor();
-      audioRef.current = context;
-      void context.resume?.();
 
       const now = context.currentTime;
       const oscillator = context.createOscillator();
       const gain = context.createGain();
-      const clickLength = 0.035 + progressValue * 0.035;
-      const volume = 0.05 + progressValue * 0.07;
+      const filter = context.createBiquadFilter();
+      const clickLength = 0.052 + progressValue * 0.05;
+      const volume = 0.04 + progressValue * 0.055;
+      const startFrequency = 620 - progressValue * 180;
+      const endFrequency = 420 - progressValue * 110;
 
-      oscillator.type = "square";
-      oscillator.frequency.value = 740 - progressValue * 180;
+      oscillator.type = "triangle";
+      oscillator.frequency.setValueAtTime(startFrequency, now);
+      oscillator.frequency.exponentialRampToValueAtTime(endFrequency, now + clickLength);
+      filter.type = "lowpass";
+      filter.frequency.value = 2100 - progressValue * 620;
+      filter.Q.value = 0.75;
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(volume, now + 0.004);
+      gain.gain.exponentialRampToValueAtTime(volume, now + 0.006);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + clickLength);
-      oscillator.connect(gain);
+      oscillator.connect(filter);
+      filter.connect(gain);
       gain.connect(context.destination);
       oscillator.start(now);
       oscillator.stop(now + clickLength + 0.01);
     },
-    [muted],
+    [getAudioContext],
   );
 
   function resetTopicPool(nextTopics: string[]) {
