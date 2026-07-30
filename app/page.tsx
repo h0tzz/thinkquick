@@ -945,13 +945,13 @@ function ModeSwitch({
 }
 
 export default function Home() {
-  const [mode, setMode] = useState<ModeId>("off-the-cuff");
+  const [mode, setMode] = useState<ModeId>("deep-research");
   const [niche, setNiche] = useState("general");
   const [speechSeconds, setSpeechSeconds] = useState(60);
   const [researchSeconds, setResearchSeconds] = useState(600);
   const [muted, setMuted] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [displayTopic, setDisplayTopic] = useState(GROUPS[0].topics[0]);
+  const [displayTopic, setDisplayTopic] = useState(DEEP_GROUP.topics[0]);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [isLanded, setIsLanded] = useState(false);
@@ -971,7 +971,6 @@ export default function Home() {
     [mode, niche],
   );
 
-  const activeMode = MODES.find((item) => item.id === mode) ?? MODES[0];
   const timerOpen = timerState !== "idle";
   const isResearchTimer = timerState === "research";
   const isSpeechTimer = timerState === "speech" || timerState === "done";
@@ -985,46 +984,26 @@ export default function Home() {
   const researchClock = formatDigits(researchSeconds);
   const challengeTitle =
     mode === "deep-research"
-      ? "Сложная тема. Research. Речь."
+      ? "Research. Потом речь."
       : `${speechClock}. Тема решает.`;
   const challengeSubtitle =
     mode === "deep-research"
-      ? `Сначала ${formatDuration(researchSeconds)} на разбор, потом ${formatDuration(
+      ? `${formatDuration(researchSeconds)} на разбор. Затем ${formatDuration(
           speechSeconds,
         )} на объяснение без шпаргалок.`
-      : "Экран выбирает случайно. Подготовки нет, менять тему нельзя.";
-  const stakeItems =
-    mode === "deep-research"
-      ? [
-          ["Тема", "сложная"],
-          ["Research", researchClock],
-          ["Речь", speechClock],
-        ]
-      : [
-          ["Тема", "случайная"],
-          ["Подготовка", "0:00"],
-          ["Речь", speechClock],
-        ];
+      : `0:00 подготовки. ${formatDuration(speechSeconds)} на выпавшую тему.`;
   const previousTopic = topicAtOffset(activeTopics, displayTopic, -1);
   const nextTopic = topicAtOffset(activeTopics, displayTopic, 1);
   const spinStageLabel =
     isSpinning
       ? spinStage === "locking"
-        ? "замедляется..."
+        ? "замедляется"
         : spinStage === "cruising"
-          ? "выбор идет"
-          : "рулетка пошла"
+          ? "крутится"
+          : "старт"
       : selectedTopic
-        ? "выбрано случайно"
-        : "жми, если готов";
-  const reelHint =
-    isSpinning
-      ? spinStage === "locking"
-        ? "Сейчас остановится. Назад дороги нет."
-        : "Смотри, как тема проскакивает мимо."
-      : selectedTopic
-        ? "Теперь говоришь на эту тему."
-        : "Тема выпадет на экране, не в голове.";
+        ? "тема выбрана"
+        : "нажми на рулетку";
 
   useEffect(() => {
     setSpeechSeconds(getSavedSeconds("speech", 60, 1, 10));
@@ -1214,8 +1193,9 @@ export default function Home() {
     lastSpinStepRef.current = 0;
     lastTickAtRef.current = startedAt;
 
-    const frame = (time: number) => {
-      const raw = Math.min(1, (time - startedAt) / SPIN_DURATION);
+    const frame = () => {
+      const now = performance.now();
+      const raw = Math.min(1, (now - startedAt) / SPIN_DURATION);
       const eased = easeOutCubic(raw);
       const step = Math.min(plan.totalSteps, Math.floor(eased * plan.totalSteps));
       const index = (startIndex + step) % activeTopics.length;
@@ -1230,9 +1210,9 @@ export default function Home() {
         setReelKey((key) => key + 1);
 
         const minTickGap = raw > 0.78 ? 54 : raw > 0.55 ? 40 : 26;
-        if (time - lastTickAtRef.current >= minTickGap) {
+        if (now - lastTickAtRef.current >= minTickGap) {
           playTick(raw);
-          lastTickAtRef.current = time;
+          lastTickAtRef.current = now;
         }
 
         lastSpinStepRef.current = step;
@@ -1320,19 +1300,9 @@ export default function Home() {
 
       <header className="brand challenge-brand">
         <div className="brand-lockup">
-          <p className="brand-kicker">тема выбирается случайно</p>
+          <p className="brand-kicker">случайная тема на время</p>
           <h1 className="brand-mark">thinkQuick</h1>
         </div>
-        <p className="brand-line">
-          <span className="truth-pill">
-            <Shuffle className="truth-icon" aria-hidden="true" />
-            случайный выбор
-          </span>
-          <span className="truth-pill is-hot">0:00 подготовки</span>
-          <span className="truth-pill is-sound">
-            {muted ? "звук выключен" : "звук рулетки"}
-          </span>
-        </p>
       </header>
 
       <section className="stage challenge-stage" aria-label="Тренировка речи">
@@ -1353,7 +1323,7 @@ export default function Home() {
         <div className="challenge-hero">
           <div className="challenge-copy">
             <p className="challenge-kicker">
-              {mode === "deep-research" ? "сложный режим" : "экспромт без подготовки"}
+              {mode === "deep-research" ? "deep research" : "экспромт"}
             </p>
             <h2 className="challenge-title">{challengeTitle}</h2>
             <p className="challenge-subtitle">{challengeSubtitle}</p>
@@ -1370,28 +1340,28 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="challenge-stakes" aria-label="Условия челленджа">
-          {stakeItems.map(([label, value]) => (
-            <span className="stake" key={label}>
-              <span>{label}</span>
-              <strong>{value}</strong>
-            </span>
-          ))}
-        </div>
-
         <div className="stage-body challenge-body">
           <div className="controls challenge-controls">
             {mode === "off-the-cuff" ? (
               <NicheSelect value={niche} disabled={isBusy} onChange={changeNiche} />
             ) : null}
-            <p className="mode-blurb">{activeMode.blurb}</p>
           </div>
 
-          <div
+          <button
+            aria-label={
+              isSpinning
+                ? "Рулетка крутится"
+                : selectedTopic
+                  ? `Тема выбрана: ${selectedTopic}. Крутить ещё`
+                  : "Крутить тему"
+            }
             className={`reel challenge-reel is-${spinStage} ${isSpinning ? "is-spinning" : ""} ${
               isLanded ? "is-landed" : ""
             }`}
+            disabled={controlsDisabled}
+            onClick={spin}
             style={{ "--spin-progress": spinProgress } as CSSProperties}
+            type="button"
           >
             <div className="roulette-status" aria-hidden="true">
               <span className="roulette-dot" />
@@ -1416,29 +1386,37 @@ export default function Home() {
             <div className="roulette-meter" aria-hidden="true">
               <span />
             </div>
-            <p className="roulette-hint">{reelHint}</p>
+            {isLanded ? (
+              <div className="casino-sparks" aria-hidden="true">
+                {Array.from({ length: 10 }, (_, index) => (
+                  <span key={index} />
+                ))}
+              </div>
+            ) : null}
             <p className="sr-only" aria-live="polite">
               {selectedTopic ? `Твоя тема: ${selectedTopic}` : ""}
             </p>
-          </div>
+          </button>
 
-          <div className="actions">
-            <div className="actions-main" aria-disabled={isBusy || undefined}>
-              <button className="btn primary" disabled={isBusy} onClick={spin} type="button">
-                <Shuffle className="btn-icon" aria-hidden="true" />
-                {isSpinning ? "Крутится..." : selectedTopic ? "Крутить ещё" : "Крутить"}
-              </button>
-              <button
-                className="btn secondary"
-                disabled={!selectedTopic || isBusy}
-                onClick={startTimer}
-                type="button"
-              >
-                <Play className="btn-icon" aria-hidden="true" />
-                {primaryLabel}
-              </button>
+          {selectedTopic ? (
+            <div className="actions">
+              <div className="actions-main" aria-disabled={isBusy || undefined}>
+                <button className="btn primary" disabled={isBusy} onClick={spin} type="button">
+                  <Shuffle className="btn-icon" aria-hidden="true" />
+                  {isSpinning ? "Крутится..." : selectedTopic ? "Крутить ещё" : "Крутить"}
+                </button>
+                <button
+                  className="btn secondary"
+                  disabled={!selectedTopic || isBusy}
+                  onClick={startTimer}
+                  type="button"
+                >
+                  <Play className="btn-icon" aria-hidden="true" />
+                  {primaryLabel}
+                </button>
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </section>
 
