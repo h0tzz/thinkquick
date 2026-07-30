@@ -416,8 +416,6 @@ const MODES = [
   },
 ];
 
-const SPEECH_STAGES = ["Что?", "И что?", "Что дальше?"];
-const DEBATE_STAGES = ["Тезис", "Аргумент", "Вывод"];
 const STORAGE_PREFIX = "thinkquick:";
 const SPIN_DURATION = 3600;
 
@@ -530,23 +528,6 @@ function spinPlan(currentIndex: number, topicCount: number) {
 
 function easeOutCubic(value: number) {
   return 1 - (1 - value) ** 3;
-}
-
-function speechStageCount(remaining: number, total: number, isDone: boolean, stageCount: number) {
-  if (isDone || total <= 0) {
-    return stageCount;
-  }
-
-  const elapsed = total - remaining;
-  const slice = total / stageCount;
-
-  for (let index = stageCount - 1; index > 0; index -= 1) {
-    if (elapsed >= slice * index) {
-      return index + 1;
-    }
-  }
-
-  return 1;
 }
 
 function timerProgress(remaining: number, total: number) {
@@ -1048,23 +1029,14 @@ export default function Home() {
   const audioRef = useRef<AudioContext | null>(null);
 
   const activeTopics = useMemo(() => topicsForMode(mode, niche), [mode, niche]);
-  const speechStages = mode === "debate" ? DEBATE_STAGES : SPEECH_STAGES;
   const currentDebatePosition = getDebatePosition(debatePosition);
 
   const timerOpen = timerState !== "idle";
   const isResearchTimer = timerState === "research";
-  const isSpeechTimer = timerState === "speech" || timerState === "done";
   const isBusy = isSpinning || timerOpen;
   const controlsDisabled = isBusy || settingsOpen;
   const currentTotal = isResearchTimer ? researchSeconds : speechSeconds;
   const progress = timerState === "ready" ? 0 : timerOpen ? timerProgress(remaining, currentTotal) : 0;
-  const stageHits = speechStageCount(
-    remaining,
-    speechSeconds,
-    timerState === "done",
-    speechStages.length,
-  );
-  const showSpeechStages = mode !== "deep-research" && isSpeechTimer;
   const speechClock = formatDigits(speechSeconds);
   const researchClock = formatDigits(researchSeconds);
   const challengeTitle =
@@ -1592,21 +1564,6 @@ export default function Home() {
           <div className="timer-overlay-inner">
             {selectedTopicLabel ? <p className="timer-topic">{selectedTopicLabel}</p> : null}
             {isResearchTimer ? <p className="timer-phase">Разбор</p> : null}
-
-            {showSpeechStages ? (
-              <ol className="speech-stages" aria-label="Дуга речи">
-                {speechStages.map((stage, index) => (
-                  <li
-                    className={`speech-stage ${
-                      index < stageHits ? "is-hit" : "is-pending"
-                    }`}
-                    key={stage}
-                  >
-                    <span className="speech-stage-label">{stage}</span>
-                  </li>
-                ))}
-              </ol>
-            ) : null}
 
             <div
               className="timer-ring"
