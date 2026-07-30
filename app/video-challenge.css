@@ -18,7 +18,7 @@
   justify-content: center;
   gap: 1rem;
   width: min(1040px, 100%);
-  margin-bottom: 0.55rem;
+  margin-bottom: clamp(1.05rem, 2.7vh, 1.65rem);
   text-align: center;
 }
 
@@ -94,6 +94,57 @@
   justify-content: center;
   gap: 0.6rem;
   width: 100%;
+}
+
+.challenge-topbar .mode-switch {
+  --tab-pad: 0.35rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100%, 23.5rem);
+  min-height: 3.15rem;
+  padding: var(--tab-pad);
+  overflow: hidden;
+  background: linear-gradient(180deg, #f4e8d610, #f4e8d608);
+  box-shadow:
+    inset 0 0 0 1px #f4e8d638,
+    0 14px 34px #00000026;
+}
+
+.challenge-topbar .mode-thumb {
+  top: var(--tab-pad);
+  bottom: var(--tab-pad);
+  left: var(--tab-pad);
+  width: calc((100% - (var(--tab-pad) * 2)) / 2);
+  background: linear-gradient(180deg, #cd8250, #b86e41);
+  box-shadow: 0 10px 24px #c47a4a38, inset 0 1px 0 #ffe0b840;
+}
+
+.challenge-topbar .mode-option {
+  min-width: 0;
+  min-height: 2.45rem;
+  padding: 0.62rem 0.9rem;
+  gap: 0.48rem;
+  overflow: hidden;
+  font-size: 0.92rem;
+}
+
+.challenge-topbar .mode-option:not(.is-active):hover {
+  color: #fff3df;
+}
+
+.challenge-topbar .mode-option.is-active {
+  color: #17120f;
+}
+
+.challenge-topbar .mode-emoji {
+  flex: 0 0 1.1rem;
+  text-align: center;
+}
+
+.challenge-topbar .mode-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .challenge-hero {
@@ -870,7 +921,7 @@
 
 @media (max-width: 860px) {
   .challenge-brand {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   .challenge-hero {
@@ -917,7 +968,7 @@
   }
 
   .challenge-brand {
-    margin-bottom: 0.7rem;
+    margin-bottom: 1rem;
   }
 
   .challenge-stage {
@@ -1001,9 +1052,13 @@
     flex: 1;
   }
 
-  .mode-option {
-    padding-inline: 0.75rem;
+  .challenge-topbar .mode-option {
+    padding-inline: 0.65rem;
     font-size: 0.84rem;
+  }
+
+  .challenge-topbar .mode-emoji {
+    flex-basis: 1rem;
   }
 
   .challenge-reel {
