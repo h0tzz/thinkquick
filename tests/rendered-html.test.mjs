@@ -33,13 +33,13 @@ test("server-renders the speaking practice app shell", async () => {
 
   const html = await response.text();
   assert.match(html, /thinkQuick/);
-  assert.match(html, /Случайная тема/);
-  assert.match(html, /REC challenge/);
+  assert.match(html, /Тема решает/);
+  assert.match(html, /случайный выбор/);
   assert.match(html, /Экспромт/);
   assert.match(html, /Deep research/);
   assert.match(html, /Крутить/);
   assert.match(html, /Общее/);
-  assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|SkeletonPreview/);
+  assert.doesNotMatch(html, /REC challenge|codex-preview|react-loading-skeleton|SkeletonPreview/);
 });
 
 test("removes starter preview assets from the finished site", async () => {

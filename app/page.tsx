@@ -1,6 +1,6 @@
 "use client";
 
-import { AtSign, Play, Settings, Shuffle } from "lucide-react";
+import { Play, Settings, Shuffle } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -15,6 +15,7 @@ import { createPortal } from "react-dom";
 
 type ModeId = "off-the-cuff" | "deep-research";
 type TimerState = "idle" | "research" | "ready" | "speech" | "done";
+type SpinStage = "idle" | "accelerating" | "cruising" | "locking" | "landed";
 
 type TopicGroup = {
   id: string;
@@ -372,7 +373,7 @@ const MODES = [
 
 const SPEECH_STAGES = ["Что?", "И что?", "Что дальше?"];
 const STORAGE_PREFIX = "thinkquick:";
-const SPIN_DURATION = 4800;
+const SPIN_DURATION = 3600;
 
 function getGroup(id: string) {
   return GROUPS.find((group) => group.id === id) ?? GROUPS[0];
@@ -504,6 +505,15 @@ function topicLengthClass(topic: string | null | undefined) {
   }
 
   return "";
+}
+
+function topicAtOffset(topics: string[], topic: string, offset: number) {
+  if (topics.length === 0) {
+    return "";
+  }
+
+  const index = Math.max(0, topics.indexOf(topic));
+  return topics[(index + offset + topics.length) % topics.length] ?? "";
 }
 
 function DurationField({
@@ -945,11 +955,15 @@ export default function Home() {
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [isLanded, setIsLanded] = useState(false);
+  const [spinStage, setSpinStage] = useState<SpinStage>("idle");
+  const [spinProgress, setSpinProgress] = useState(0);
   const [timerState, setTimerState] = useState<TimerState>("idle");
   const [remaining, setRemaining] = useState(60);
   const [reelKey, setReelKey] = useState(0);
   const topicIndexRef = useRef(0);
   const spinFrameRef = useRef<number | null>(null);
+  const lastSpinStepRef = useRef(0);
+  const lastTickAtRef = useRef(0);
   const audioRef = useRef<AudioContext | null>(null);
 
   const activeTopics = useMemo(
@@ -972,13 +986,13 @@ export default function Home() {
   const challengeTitle =
     mode === "deep-research"
       ? "Сложная тема. Research. Речь."
-      : `${speechClock}. Случайная тема.`;
+      : `${speechClock}. Тема решает.`;
   const challengeSubtitle =
     mode === "deep-research"
       ? `Сначала ${formatDuration(researchSeconds)} на разбор, потом ${formatDuration(
           speechSeconds,
         )} на объяснение без шпаргалок.`
-      : "Без подготовки, без дублей, без безопасной темы заранее.";
+      : "Экран выбирает случайно. Подготовки нет, менять тему нельзя.";
   const stakeItems =
     mode === "deep-research"
       ? [
@@ -991,6 +1005,26 @@ export default function Home() {
           ["Подготовка", "0:00"],
           ["Речь", speechClock],
         ];
+  const previousTopic = topicAtOffset(activeTopics, displayTopic, -1);
+  const nextTopic = topicAtOffset(activeTopics, displayTopic, 1);
+  const spinStageLabel =
+    isSpinning
+      ? spinStage === "locking"
+        ? "замедляется..."
+        : spinStage === "cruising"
+          ? "выбор идет"
+          : "рулетка пошла"
+      : selectedTopic
+        ? "выбрано случайно"
+        : "жми, если готов";
+  const reelHint =
+    isSpinning
+      ? spinStage === "locking"
+        ? "Сейчас остановится. Назад дороги нет."
+        : "Смотри, как тема проскакивает мимо."
+      : selectedTopic
+        ? "Теперь говоришь на эту тему."
+        : "Тема выпадет на экране, не в голове.";
 
   useEffect(() => {
     setSpeechSeconds(getSavedSeconds("speech", 60, 1, 10));
@@ -1068,6 +1102,7 @@ export default function Home() {
 
       const context = audioRef.current ?? new AudioContextCtor();
       audioRef.current = context;
+      void context.resume?.();
       const gain = context.createGain();
       gain.gain.value = 0.16;
       gain.connect(context.destination);
@@ -1091,6 +1126,42 @@ export default function Home() {
 
   const playSpin = useCallback(() => playNotes([523.25, 659.25, 783.99]), [playNotes]);
   const playFinish = useCallback(() => playNotes([392, 523.25, 659.25, 784]), [playNotes]);
+  const playTick = useCallback(
+    (progressValue: number) => {
+      if (muted || typeof window === "undefined") {
+        return;
+      }
+
+      const AudioContextCtor =
+        window.AudioContext ??
+        (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+
+      if (!AudioContextCtor) {
+        return;
+      }
+
+      const context = audioRef.current ?? new AudioContextCtor();
+      audioRef.current = context;
+      void context.resume?.();
+
+      const now = context.currentTime;
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      const clickLength = 0.035 + progressValue * 0.035;
+      const volume = 0.05 + progressValue * 0.07;
+
+      oscillator.type = "square";
+      oscillator.frequency.value = 740 - progressValue * 180;
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(volume, now + 0.004);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + clickLength);
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      oscillator.start(now);
+      oscillator.stop(now + clickLength + 0.01);
+    },
+    [muted],
+  );
 
   function resetTopicPool(nextTopics: string[]) {
     const nextTopic = randomTopic(nextTopics);
@@ -1098,6 +1169,8 @@ export default function Home() {
     setDisplayTopic(nextTopic);
     setSelectedTopic(null);
     setIsLanded(false);
+    setSpinStage("idle");
+    setSpinProgress(0);
     setReelKey((key) => key + 1);
   }
 
@@ -1127,6 +1200,8 @@ export default function Home() {
     playSpin();
     setIsSpinning(true);
     setIsLanded(false);
+    setSpinStage("accelerating");
+    setSpinProgress(0);
     setSelectedTopic(null);
 
     if (spinFrameRef.current !== null) {
@@ -1136,15 +1211,32 @@ export default function Home() {
     const startedAt = performance.now();
     const startIndex = topicIndexRef.current;
     const plan = spinPlan(startIndex, activeTopics.length);
+    lastSpinStepRef.current = 0;
+    lastTickAtRef.current = startedAt;
 
     const frame = (time: number) => {
       const raw = Math.min(1, (time - startedAt) / SPIN_DURATION);
       const eased = easeOutCubic(raw);
       const step = Math.min(plan.totalSteps, Math.floor(eased * plan.totalSteps));
       const index = (startIndex + step) % activeTopics.length;
+      const nextStage: SpinStage =
+        raw > 0.76 ? "locking" : raw > 0.2 ? "cruising" : "accelerating";
 
-      setDisplayTopic(activeTopics[index] ?? activeTopics[0] ?? "");
-      setReelKey((key) => key + 1);
+      setSpinProgress(raw);
+      setSpinStage(nextStage);
+
+      if (step !== lastSpinStepRef.current) {
+        setDisplayTopic(activeTopics[index] ?? activeTopics[0] ?? "");
+        setReelKey((key) => key + 1);
+
+        const minTickGap = raw > 0.78 ? 54 : raw > 0.55 ? 40 : 26;
+        if (time - lastTickAtRef.current >= minTickGap) {
+          playTick(raw);
+          lastTickAtRef.current = time;
+        }
+
+        lastSpinStepRef.current = step;
+      }
 
       if (raw < 1) {
         spinFrameRef.current = window.requestAnimationFrame(frame);
@@ -1157,6 +1249,8 @@ export default function Home() {
       setSelectedTopic(landedTopic);
       setIsSpinning(false);
       setIsLanded(true);
+      setSpinStage("landed");
+      setSpinProgress(1);
       playFinish();
       spinFrameRef.current = null;
     };
@@ -1226,18 +1320,18 @@ export default function Home() {
 
       <header className="brand challenge-brand">
         <div className="brand-lockup">
-          <p className="brand-kicker">говорю на рандомную тему</p>
+          <p className="brand-kicker">тема выбирается случайно</p>
           <h1 className="brand-mark">thinkQuick</h1>
         </div>
         <p className="brand-line">
-          <span className="record-pill" aria-label="Челлендж записывается">
-            <span className="record-dot" aria-hidden="true" />
-            REC challenge
+          <span className="truth-pill">
+            <Shuffle className="truth-icon" aria-hidden="true" />
+            случайный выбор
           </span>
-          <a className="brand-link" href="https://chatgpt.com">
-            <AtSign className="brand-link-icon" aria-hidden="true" />
-            практика
-          </a>
+          <span className="truth-pill is-hot">0:00 подготовки</span>
+          <span className="truth-pill is-sound">
+            {muted ? "звук выключен" : "звук рулетки"}
+          </span>
         </p>
       </header>
 
@@ -1259,7 +1353,7 @@ export default function Home() {
         <div className="challenge-hero">
           <div className="challenge-copy">
             <p className="challenge-kicker">
-              {mode === "deep-research" ? "Deep research mode" : "Off the cuff mode"}
+              {mode === "deep-research" ? "сложный режим" : "экспромт без подготовки"}
             </p>
             <h2 className="challenge-title">{challengeTitle}</h2>
             <p className="challenge-subtitle">{challengeSubtitle}</p>
@@ -1294,19 +1388,35 @@ export default function Home() {
           </div>
 
           <div
-            className={`reel challenge-reel ${isSpinning ? "is-spinning" : ""} ${
+            className={`reel challenge-reel is-${spinStage} ${isSpinning ? "is-spinning" : ""} ${
               isLanded ? "is-landed" : ""
             }`}
+            style={{ "--spin-progress": spinProgress } as CSSProperties}
           >
-            <p className="reel-eyebrow">
-              {isSpinning ? "3... 2... 1..." : selectedTopic ? "Тема выпала" : "Сейчас выпадет"}
-            </p>
-            <p
-              className={`reel-phrase ${topicLengthClass(displayTopic)}`}
-              key={reelKey}
-            >
-              {displayTopic || "Тема"}
-            </p>
+            <div className="roulette-status" aria-hidden="true">
+              <span className="roulette-dot" />
+              <span>{spinStageLabel}</span>
+            </div>
+            <div className="roulette-window">
+              <span className="roulette-edge is-top" aria-hidden="true" />
+              <span className="roulette-edge is-bottom" aria-hidden="true" />
+              <span className="reel-ghost is-prev" aria-hidden="true">
+                {previousTopic}
+              </span>
+              <p
+                className={`reel-phrase ${topicLengthClass(displayTopic)}`}
+                key={reelKey}
+              >
+                {displayTopic || "Тема"}
+              </p>
+              <span className="reel-ghost is-next" aria-hidden="true">
+                {nextTopic}
+              </span>
+            </div>
+            <div className="roulette-meter" aria-hidden="true">
+              <span />
+            </div>
+            <p className="roulette-hint">{reelHint}</p>
             <p className="sr-only" aria-live="polite">
               {selectedTopic ? `Твоя тема: ${selectedTopic}` : ""}
             </p>
