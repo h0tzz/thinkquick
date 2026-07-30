@@ -516,6 +516,21 @@ function topicAtOffset(topics: string[], topic: string, offset: number) {
   return topics[(index + offset + topics.length) % topics.length] ?? "";
 }
 
+function isEditableTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) {
+    return false;
+  }
+
+  const tagName = target.tagName;
+  return (
+    target.isContentEditable ||
+    tagName === "INPUT" ||
+    tagName === "TEXTAREA" ||
+    tagName === "SELECT" ||
+    Boolean(target.closest("[role='textbox']"))
+  );
+}
+
 function DurationField({
   label,
   hint,
@@ -1171,7 +1186,7 @@ export default function Home() {
     resetTopicPool(getGroup(nextNiche).topics);
   }
 
-  function spin() {
+  const spin = useCallback(() => {
     if (isBusy || activeTopics.length === 0) {
       return;
     }
@@ -1236,7 +1251,25 @@ export default function Home() {
     };
 
     spinFrameRef.current = window.requestAnimationFrame(frame);
-  }
+  }, [activeTopics, isBusy, playFinish, playSpin, playTick]);
+
+  useEffect(() => {
+    function handleKeydown(event: globalThis.KeyboardEvent) {
+      if (event.defaultPrevented || event.repeat || event.key !== "Enter") {
+        return;
+      }
+
+      if (isEditableTarget(event.target) || controlsDisabled || activeTopics.length === 0) {
+        return;
+      }
+
+      event.preventDefault();
+      spin();
+    }
+
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
+  }, [activeTopics.length, controlsDisabled, spin]);
 
   function startSpeech() {
     setTimerState("speech");
@@ -1359,6 +1392,7 @@ export default function Home() {
             }`}
             disabled={controlsDisabled}
             onClick={spin}
+            aria-keyshortcuts="Enter"
             style={{ "--spin-progress": spinProgress } as CSSProperties}
             type="button"
           >
