@@ -33,6 +33,8 @@ test("server-renders the speaking practice app shell", async () => {
 
   const html = await response.text();
   assert.match(html, /thinkQuick/);
+  assert.match(html, /Случайная тема/);
+  assert.match(html, /REC challenge/);
   assert.match(html, /Экспромт/);
   assert.match(html, /Deep research/);
   assert.match(html, /Крутить/);
@@ -51,7 +53,7 @@ test("removes starter preview assets from the finished site", async () => {
   assert.match(page, /"use client"/);
   assert.match(page, /const GROUPS/);
   assert.match(layout, /lang="ru"/);
-  assert.match(layout, /thinkQuick \| Speaking practice/);
+  assert.match(layout, /thinkQuick \| 60 секунд на случайную тему/);
   assert.match(css, /\.reel-phrase/);
   assert.match(css, /\.timer-overlay/);
   assert.doesNotMatch(page, /codex-preview|_sites-preview|SkeletonPreview/);

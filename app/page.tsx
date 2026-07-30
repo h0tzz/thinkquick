@@ -1,6 +1,6 @@
 "use client";
 
-import { AtSign, Settings } from "lucide-react";
+import { AtSign, Play, Settings, Shuffle } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -965,6 +965,30 @@ export default function Home() {
   const progress = timerState === "ready" ? 0 : timerOpen ? timerProgress(remaining, currentTotal) : 0;
   const stageHits = speechStageCount(remaining, speechSeconds, timerState === "done");
   const showSpeechStages = mode === "off-the-cuff" && isSpeechTimer;
+  const speechClock = formatDigits(speechSeconds);
+  const researchClock = formatDigits(researchSeconds);
+  const challengeTitle =
+    mode === "deep-research"
+      ? "Сложная тема. Research. Речь."
+      : `${speechClock}. Случайная тема.`;
+  const challengeSubtitle =
+    mode === "deep-research"
+      ? `Сначала ${formatDuration(researchSeconds)} на разбор, потом ${formatDuration(
+          speechSeconds,
+        )} на объяснение без шпаргалок.`
+      : "Без подготовки, без дублей, без безопасной темы заранее.";
+  const stakeItems =
+    mode === "deep-research"
+      ? [
+          ["Тема", "сложная"],
+          ["Research", researchClock],
+          ["Речь", speechClock],
+        ]
+      : [
+          ["Тема", "случайная"],
+          ["Подготовка", "0:00"],
+          ["Речь", speechClock],
+        ];
 
   useEffect(() => {
     setSpeechSeconds(getSavedSeconds("speech", 60, 1, 10));
@@ -1188,53 +1212,91 @@ export default function Home() {
 
   const primaryLabel =
     timerState === "ready"
-      ? "Готов говорить"
+      ? `Начать речь ${speechClock}`
       : mode === "deep-research"
-        ? `Начать ${formatDuration(researchSeconds)} research`
-        : `Начать ${formatDuration(speechSeconds)} таймер`;
+        ? `Research ${researchClock}`
+        : `Старт ${speechClock}`;
 
   return (
-    <main className="page">
+    <main className={`page challenge-page ${mode === "deep-research" ? "is-research-mode" : ""}`}>
       <div className="atmosphere" aria-hidden="true" />
 
-      <header className="brand">
-        <h1 className="brand-mark">thinkQuick</h1>
+      <header className="brand challenge-brand">
+        <div className="brand-lockup">
+          <p className="brand-kicker">говорю на рандомную тему</p>
+          <h1 className="brand-mark">thinkQuick</h1>
+        </div>
         <p className="brand-line">
-          сделано для{" "}
+          <span className="record-pill" aria-label="Челлендж записывается">
+            <span className="record-dot" aria-hidden="true" />
+            REC challenge
+          </span>
           <a className="brand-link" href="https://chatgpt.com">
             <AtSign className="brand-link-icon" aria-hidden="true" />
-            практики
+            практика
           </a>
         </p>
       </header>
 
-      <section className="stage" aria-label="Тренировка речи">
-        <div className="stage-body">
-          <div className="controls">
-            <div className="controls-row">
-              <ModeSwitch value={mode} disabled={controlsDisabled} onChange={changeMode} />
-              <SettingsDialog
-                disabled={isBusy}
-                muted={muted}
-                onChangeMuted={setMuted}
-                onChangeResearch={(seconds) =>
-                  setResearchSeconds(clampSeconds(seconds, 1, 60))
-                }
-                onChangeSpeech={(seconds) => setSpeechSeconds(clampSeconds(seconds, 1, 10))}
-                onOpenChange={setSettingsOpen}
-                researchSeconds={researchSeconds}
-                speechSeconds={speechSeconds}
-              />
-            </div>
-            <p className="mode-blurb">{activeMode.blurb}</p>
+      <section className="stage challenge-stage" aria-label="Тренировка речи">
+        <div className="challenge-topbar">
+          <ModeSwitch value={mode} disabled={controlsDisabled} onChange={changeMode} />
+          <SettingsDialog
+            disabled={isBusy}
+            muted={muted}
+            onChangeMuted={setMuted}
+            onChangeResearch={(seconds) => setResearchSeconds(clampSeconds(seconds, 1, 60))}
+            onChangeSpeech={(seconds) => setSpeechSeconds(clampSeconds(seconds, 1, 10))}
+            onOpenChange={setSettingsOpen}
+            researchSeconds={researchSeconds}
+            speechSeconds={speechSeconds}
+          />
+        </div>
+
+        <div className="challenge-hero">
+          <div className="challenge-copy">
+            <p className="challenge-kicker">
+              {mode === "deep-research" ? "Deep research mode" : "Off the cuff mode"}
+            </p>
+            <h2 className="challenge-title">{challengeTitle}</h2>
+            <p className="challenge-subtitle">{challengeSubtitle}</p>
+          </div>
+
+          <div className="challenge-clock" aria-label={`Время речи ${formatDuration(speechSeconds)}`}>
+            <span className="challenge-clock-label">на речь</span>
+            <strong>{speechClock}</strong>
+            {mode === "deep-research" ? (
+              <span className="challenge-clock-note">research {researchClock}</span>
+            ) : (
+              <span className="challenge-clock-note">без подготовки</span>
+            )}
+          </div>
+        </div>
+
+        <div className="challenge-stakes" aria-label="Условия челленджа">
+          {stakeItems.map(([label, value]) => (
+            <span className="stake" key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </span>
+          ))}
+        </div>
+
+        <div className="stage-body challenge-body">
+          <div className="controls challenge-controls">
             {mode === "off-the-cuff" ? (
               <NicheSelect value={niche} disabled={isBusy} onChange={changeNiche} />
             ) : null}
+            <p className="mode-blurb">{activeMode.blurb}</p>
           </div>
 
-          <div className={`reel ${isSpinning ? "is-spinning" : ""} ${isLanded ? "is-landed" : ""}`}>
+          <div
+            className={`reel challenge-reel ${isSpinning ? "is-spinning" : ""} ${
+              isLanded ? "is-landed" : ""
+            }`}
+          >
             <p className="reel-eyebrow">
-              {isSpinning ? "Крутим..." : selectedTopic ? "Твоя тема" : "Готово"}
+              {isSpinning ? "3... 2... 1..." : selectedTopic ? "Тема выпала" : "Сейчас выпадет"}
             </p>
             <p
               className={`reel-phrase ${topicLengthClass(displayTopic)}`}
@@ -1250,6 +1312,7 @@ export default function Home() {
           <div className="actions">
             <div className="actions-main" aria-disabled={isBusy || undefined}>
               <button className="btn primary" disabled={isBusy} onClick={spin} type="button">
+                <Shuffle className="btn-icon" aria-hidden="true" />
                 {isSpinning ? "Крутится..." : selectedTopic ? "Крутить ещё" : "Крутить"}
               </button>
               <button
@@ -1258,6 +1321,7 @@ export default function Home() {
                 onClick={startTimer}
                 type="button"
               >
+                <Play className="btn-icon" aria-hidden="true" />
                 {primaryLabel}
               </button>
             </div>
@@ -1271,6 +1335,12 @@ export default function Home() {
           aria-modal="true"
           className={`timer-overlay ${timerState === "done" ? "is-done" : "is-live"} ${
             isResearchTimer ? "is-research" : ""
+          } ${
+            timerState === "speech" && remaining <= 10
+              ? "is-final-seconds"
+              : timerState === "speech" && remaining <= 20
+                ? "is-warning-seconds"
+                : ""
           }`}
           role="dialog"
         >
@@ -1316,7 +1386,14 @@ export default function Home() {
               ) : null}
               {timerState === "ready" ? (
                 <button className="btn primary" onClick={startSpeech} type="button">
+                  <Play className="btn-icon" aria-hidden="true" />
                   Я готов говорить
+                </button>
+              ) : null}
+              {timerState === "done" ? (
+                <button className="btn primary" onClick={closeTimer} type="button">
+                  <Shuffle className="btn-icon" aria-hidden="true" />
+                  Ещё тема
                 </button>
               ) : null}
               <button className="btn ghost" onClick={closeTimer} type="button">

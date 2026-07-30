@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "./topic-fit.css";
+import "./video-challenge.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "thinkQuick | Speaking practice",
+  title: "thinkQuick | 60 секунд на случайную тему",
   description:
-    "A random speaking-topic timer with off-the-cuff and deep research modes.",
+    "Видео-челлендж для речи: случайная тема, таймер и режим deep research.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
