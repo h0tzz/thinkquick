@@ -13,7 +13,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
-type ModeId = "off-the-cuff" | "deep-research";
+type ModeId = "off-the-cuff" | "deep-research" | "debate";
+type DebatePositionId = "pro" | "con";
 type TimerState = "idle" | "research" | "ready" | "speech" | "done";
 type SpinStage = "idle" | "accelerating" | "cruising" | "locking" | "landed";
 
@@ -355,6 +356,44 @@ const DEEP_RESEARCH_ID = "deep-research";
 const OFF_GROUPS = GROUPS.filter((group) => group.id !== DEEP_RESEARCH_ID);
 const DEEP_GROUP = getGroup(DEEP_RESEARCH_ID);
 
+const DEBATE_TOPICS = [
+  "ИИ должен заменить экзамены",
+  "Школы должны отменить оценки",
+  "Удалёнка лучше офиса",
+  "Соцсети должны скрыть лайки",
+  "Базовый доход нужен всем",
+  "Смартфоны детям до 14 лет нужно запретить",
+  "Города должны ограничить личные автомобили",
+  "Университет больше не обязателен",
+  "Налог на роскошь должен быть выше",
+  "Алгоритмы рекомендаций вредят обществу",
+  "Домашние задания нужно отменить",
+  "Четырёхдневная рабочая неделя должна стать нормой",
+  "Анонимность в интернете нужно ограничить",
+  "Платное образование мотивирует лучше",
+  "Короткие видео ухудшают внимание",
+  "Государство должно жёстко регулировать ИИ",
+  "Большие города делают людей счастливее",
+  "Криптовалюты полезны экономике",
+  "Реклама детям должна быть запрещена",
+  "Личная эффективность переоценена",
+  "Компании должны публиковать зарплатные вилки",
+  "Оценивать людей по дипломам устарело",
+  "Мясо должно стать дороже из-за экологии",
+  "Камеры наблюдения делают город безопаснее",
+  "Игры могут быть полноценным образованием",
+  "Работа мечты - вредная идея",
+  "Электронное голосование лучше бумажного",
+  "Нужно вводить налог на роботов",
+  "Искусство, созданное ИИ, настоящее искусство",
+  "Блогеры влияют сильнее журналистов",
+];
+
+const DEBATE_POSITIONS = [
+  { id: "pro", label: "За", short: "ЗА", tone: "is-pro" },
+  { id: "con", label: "Против", short: "ПРОТИВ", tone: "is-con" },
+] as const;
+
 const MODES = [
   {
     id: "deep-research" as const,
@@ -369,9 +408,16 @@ const MODES = [
     emoji: "🧠",
     blurb: "Минимум подготовки. Думай быстро, пока говоришь.",
   },
+  {
+    id: "debate" as const,
+    label: "Дебаты",
+    emoji: "⚖️",
+    blurb: "Выпадает тема и сторона. Докажи позицию, даже если не согласен.",
+  },
 ];
 
 const SPEECH_STAGES = ["Что?", "И что?", "Что дальше?"];
+const DEBATE_STAGES = ["Тезис", "Аргумент", "Вывод"];
 const STORAGE_PREFIX = "thinkquick:";
 const SPIN_DURATION = 3600;
 
@@ -379,8 +425,28 @@ function getGroup(id: string) {
   return GROUPS.find((group) => group.id === id) ?? GROUPS[0];
 }
 
+function topicsForMode(mode: ModeId, nicheId: string) {
+  if (mode === "deep-research") {
+    return DEEP_GROUP.topics;
+  }
+
+  if (mode === "debate") {
+    return DEBATE_TOPICS;
+  }
+
+  return getGroup(nicheId).topics;
+}
+
 function randomTopic(topics: string[]) {
   return topics[Math.floor(Math.random() * topics.length)] ?? topics[0] ?? "";
+}
+
+function randomDebatePosition() {
+  return DEBATE_POSITIONS[Math.floor(Math.random() * DEBATE_POSITIONS.length)]?.id ?? "pro";
+}
+
+function getDebatePosition(id: DebatePositionId | null) {
+  return DEBATE_POSITIONS.find((position) => position.id === id) ?? null;
 }
 
 function formatDigits(seconds: number) {
@@ -466,20 +532,18 @@ function easeOutCubic(value: number) {
   return 1 - (1 - value) ** 3;
 }
 
-function speechStageCount(remaining: number, total: number, isDone: boolean) {
+function speechStageCount(remaining: number, total: number, isDone: boolean, stageCount: number) {
   if (isDone || total <= 0) {
-    return SPEECH_STAGES.length;
+    return stageCount;
   }
 
   const elapsed = total - remaining;
-  const slice = total / SPEECH_STAGES.length;
+  const slice = total / stageCount;
 
-  if (elapsed >= slice * 2) {
-    return 3;
-  }
-
-  if (elapsed >= slice) {
-    return 2;
+  for (let index = stageCount - 1; index > 0; index -= 1) {
+    if (elapsed >= slice * index) {
+      return index + 1;
+    }
   }
 
   return 1;
@@ -677,6 +741,7 @@ function SettingsDialog({
               </header>
 
               <DurationField
+                hint="Для экспромта и дебатов"
                 label="Речь"
                 max={10}
                 min={1}
@@ -968,6 +1033,7 @@ export default function Home() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [displayTopic, setDisplayTopic] = useState(DEEP_GROUP.topics[0]);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [debatePosition, setDebatePosition] = useState<DebatePositionId | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [isLanded, setIsLanded] = useState(false);
   const [spinStage, setSpinStage] = useState<SpinStage>("idle");
@@ -981,10 +1047,9 @@ export default function Home() {
   const lastTickAtRef = useRef(0);
   const audioRef = useRef<AudioContext | null>(null);
 
-  const activeTopics = useMemo(
-    () => (mode === "deep-research" ? DEEP_GROUP.topics : getGroup(niche).topics),
-    [mode, niche],
-  );
+  const activeTopics = useMemo(() => topicsForMode(mode, niche), [mode, niche]);
+  const speechStages = mode === "debate" ? DEBATE_STAGES : SPEECH_STAGES;
+  const currentDebatePosition = getDebatePosition(debatePosition);
 
   const timerOpen = timerState !== "idle";
   const isResearchTimer = timerState === "research";
@@ -993,32 +1058,55 @@ export default function Home() {
   const controlsDisabled = isBusy || settingsOpen;
   const currentTotal = isResearchTimer ? researchSeconds : speechSeconds;
   const progress = timerState === "ready" ? 0 : timerOpen ? timerProgress(remaining, currentTotal) : 0;
-  const stageHits = speechStageCount(remaining, speechSeconds, timerState === "done");
-  const showSpeechStages = mode === "off-the-cuff" && isSpeechTimer;
+  const stageHits = speechStageCount(
+    remaining,
+    speechSeconds,
+    timerState === "done",
+    speechStages.length,
+  );
+  const showSpeechStages = mode !== "deep-research" && isSpeechTimer;
   const speechClock = formatDigits(speechSeconds);
   const researchClock = formatDigits(researchSeconds);
   const challengeTitle =
     mode === "deep-research"
       ? "Сначала разбор. Потом речь."
+      : mode === "debate"
+        ? "Защити позицию."
       : "Говори сразу. Без подготовки.";
   const challengeSubtitle =
     mode === "deep-research"
       ? `${formatDuration(researchSeconds)} на разбор темы. Потом ${formatDuration(
           speechSeconds,
         )} объясняешь своими словами.`
+      : mode === "debate"
+        ? `Выпадет тема и сторона: за или против. У тебя ${formatDuration(
+            speechSeconds,
+          )}, чтобы убедить зрителя.`
       : `Крути тему и объясняй её ${formatDuration(speechSeconds)} без паузы на разбор.`;
+  const challengeKicker =
+    mode === "deep-research" ? "с разбором" : mode === "debate" ? "дебаты" : "экспромт";
   const previousTopic = topicAtOffset(activeTopics, displayTopic, -1);
   const nextTopic = topicAtOffset(activeTopics, displayTopic, 1);
   const spinStageLabel =
     isSpinning
       ? spinStage === "locking"
-        ? "сейчас выпадет"
+        ? mode === "debate"
+          ? "сейчас решит"
+          : "сейчас выпадет"
         : spinStage === "cruising"
-          ? "мелькают темы"
+          ? mode === "debate"
+            ? "ищем спор"
+            : "мелькают темы"
           : "поехали"
       : selectedTopic
-        ? "вот твоя тема"
+        ? mode === "debate"
+          ? "твоя сторона"
+          : "вот твоя тема"
         : "нажми на рулетку";
+  const selectedTopicLabel =
+    selectedTopic && currentDebatePosition
+      ? `${currentDebatePosition.label}: ${selectedTopic}`
+      : selectedTopic;
 
   useEffect(() => {
     setSpeechSeconds(getSavedSeconds("speech", 60, 1, 10));
@@ -1162,6 +1250,7 @@ export default function Home() {
     topicIndexRef.current = Math.max(0, nextTopics.indexOf(nextTopic));
     setDisplayTopic(nextTopic);
     setSelectedTopic(null);
+    setDebatePosition(null);
     setIsLanded(false);
     setSpinStage("idle");
     setSpinProgress(0);
@@ -1174,7 +1263,7 @@ export default function Home() {
     }
 
     setMode(nextMode);
-    resetTopicPool(nextMode === "deep-research" ? DEEP_GROUP.topics : getGroup(niche).topics);
+    resetTopicPool(topicsForMode(nextMode, niche));
   }
 
   function changeNiche(nextNiche: string) {
@@ -1183,7 +1272,7 @@ export default function Home() {
     }
 
     setNiche(nextNiche);
-    resetTopicPool(getGroup(nextNiche).topics);
+    resetTopicPool(topicsForMode(mode, nextNiche));
   }
 
   const spin = useCallback(() => {
@@ -1197,6 +1286,7 @@ export default function Home() {
     setSpinStage("accelerating");
     setSpinProgress(0);
     setSelectedTopic(null);
+    setDebatePosition(null);
 
     if (spinFrameRef.current !== null) {
       window.cancelAnimationFrame(spinFrameRef.current);
@@ -1242,6 +1332,7 @@ export default function Home() {
       const landedTopic = activeTopics[plan.landIndex] ?? activeTopics[0] ?? "";
       setDisplayTopic(landedTopic);
       setSelectedTopic(landedTopic);
+      setDebatePosition(mode === "debate" ? randomDebatePosition() : null);
       setIsSpinning(false);
       setIsLanded(true);
       setSpinStage("landed");
@@ -1251,7 +1342,7 @@ export default function Home() {
     };
 
     spinFrameRef.current = window.requestAnimationFrame(frame);
-  }, [activeTopics, isBusy, playFinish, playSpin, playTick]);
+  }, [activeTopics, isBusy, mode, playFinish, playSpin, playTick]);
 
   useEffect(() => {
     function handleKeydown(event: globalThis.KeyboardEvent) {
@@ -1278,7 +1369,7 @@ export default function Home() {
   }
 
   function startTimer() {
-    if (!selectedTopic || isBusy) {
+    if (!selectedTopic || isBusy || (mode === "debate" && !debatePosition)) {
       return;
     }
 
@@ -1309,7 +1400,9 @@ export default function Home() {
       ? "Таймер разбора"
       : timerState === "ready"
         ? "Готов говорить"
-        : "Таймер речи";
+        : mode === "debate"
+          ? "Таймер дебатов"
+          : "Таймер речи";
 
   const timerStatus =
     timerState === "research"
@@ -1318,17 +1411,25 @@ export default function Home() {
         ? "Разбор завершён."
         : timerState === "done"
           ? "Время."
-          : "Говори.";
+          : mode === "debate"
+            ? "Держи линию."
+            : "Говори.";
 
   const primaryLabel =
     timerState === "ready"
       ? `Начать речь ${speechClock}`
       : mode === "deep-research"
         ? `Разбор ${researchClock}`
+        : mode === "debate"
+          ? `Аргументы ${speechClock}`
         : `Старт ${speechClock}`;
 
   return (
-    <main className={`page challenge-page ${mode === "deep-research" ? "is-research-mode" : ""}`}>
+    <main
+      className={`page challenge-page ${mode === "deep-research" ? "is-research-mode" : ""} ${
+        mode === "debate" ? "is-debate-mode" : ""
+      }`}
+    >
       <div className="atmosphere" aria-hidden="true" />
 
       <header className="brand challenge-brand">
@@ -1355,7 +1456,7 @@ export default function Home() {
         <div className="challenge-hero">
           <div className="challenge-copy">
             <p className="challenge-kicker">
-              {mode === "deep-research" ? "с разбором" : "экспромт"}
+              {challengeKicker}
             </p>
             <h2 className="challenge-title">{challengeTitle}</h2>
             <p className="challenge-subtitle">{challengeSubtitle}</p>
@@ -1366,6 +1467,8 @@ export default function Home() {
             <strong>{speechClock}</strong>
             {mode === "deep-research" ? (
               <span className="challenge-clock-note">разбор {researchClock}</span>
+            ) : mode === "debate" ? (
+              <span className="challenge-clock-note">за / против</span>
             ) : (
               <span className="challenge-clock-note">без подготовки</span>
             )}
@@ -1384,7 +1487,9 @@ export default function Home() {
               isSpinning
                 ? "Рулетка крутится"
                 : selectedTopic
-                  ? `Тема выбрана: ${selectedTopic}. Крутить ещё`
+                  ? mode === "debate" && currentDebatePosition
+                    ? `Тема выбрана: ${selectedTopic}. Позиция: ${currentDebatePosition.label}. Крутить ещё`
+                    : `Тема выбрана: ${selectedTopic}. Крутить ещё`
                   : "Крутить тему"
             }
             className={`reel challenge-reel is-${spinStage} ${isSpinning ? "is-spinning" : ""} ${
@@ -1422,6 +1527,15 @@ export default function Home() {
             <div className="roulette-meter" aria-hidden="true">
               <span />
             </div>
+            {mode === "debate" ? (
+              <div
+                className={`debate-position ${currentDebatePosition?.tone ?? ""}`}
+                aria-hidden={!currentDebatePosition}
+              >
+                <span>позиция</span>
+                <strong>{currentDebatePosition?.short ?? "?"}</strong>
+              </div>
+            ) : null}
             {isLanded ? (
               <div className="casino-sparks" aria-hidden="true">
                 {Array.from({ length: 10 }, (_, index) => (
@@ -1430,7 +1544,11 @@ export default function Home() {
               </div>
             ) : null}
             <p className="sr-only" aria-live="polite">
-              {selectedTopic ? `Твоя тема: ${selectedTopic}` : ""}
+              {selectedTopicLabel
+                ? mode === "debate"
+                  ? `Твоя тема и позиция: ${selectedTopicLabel}`
+                  : `Твоя тема: ${selectedTopicLabel}`
+                : ""}
             </p>
           </button>
 
@@ -1472,12 +1590,12 @@ export default function Home() {
           role="dialog"
         >
           <div className="timer-overlay-inner">
-            {selectedTopic ? <p className="timer-topic">{selectedTopic}</p> : null}
+            {selectedTopicLabel ? <p className="timer-topic">{selectedTopicLabel}</p> : null}
             {isResearchTimer ? <p className="timer-phase">Разбор</p> : null}
 
             {showSpeechStages ? (
               <ol className="speech-stages" aria-label="Дуга речи">
-                {SPEECH_STAGES.map((stage, index) => (
+                {speechStages.map((stage, index) => (
                   <li
                     className={`speech-stage ${
                       index < stageHits ? "is-hit" : "is-pending"

@@ -99,8 +99,8 @@
 .challenge-topbar .mode-switch {
   --tab-pad: 0.35rem;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: min(100%, 23.5rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(100%, 34rem);
   min-height: 3.15rem;
   padding: var(--tab-pad);
   overflow: hidden;
@@ -114,7 +114,7 @@
   top: var(--tab-pad);
   bottom: var(--tab-pad);
   left: var(--tab-pad);
-  width: calc((100% - (var(--tab-pad) * 2)) / 2);
+  width: calc((100% - (var(--tab-pad) * 2)) / 3);
   background: linear-gradient(180deg, #cd8250, #b86e41);
   box-shadow: 0 10px 24px #c47a4a38, inset 0 1px 0 #ffe0b840;
 }
@@ -238,6 +238,21 @@
 
 .is-research-mode .challenge-clock strong {
   color: var(--research);
+}
+
+.is-debate-mode .challenge-kicker {
+  color: #ff9a88;
+}
+
+.is-debate-mode .challenge-clock {
+  background:
+    linear-gradient(180deg, #ff766512, #f6c66f0a),
+    linear-gradient(180deg, #f4e8d608, #f4e8d603);
+  box-shadow: inset 0 0 0 1px #ff76654d;
+}
+
+.is-debate-mode .challenge-clock strong {
+  color: #ff7665;
 }
 
 .challenge-stakes {
@@ -621,6 +636,59 @@
   transform: scaleX(var(--spin-progress, 0));
   transform-origin: left center;
   transition: transform 80ms linear;
+}
+
+.debate-position {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 2.15rem;
+  margin-top: 0.08rem;
+  padding: 0.42rem 0.82rem;
+  color: #f4e8d6b3;
+  font-family: var(--font-body);
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  border-radius: 999px;
+  background: #f4e8d60b;
+  box-shadow: inset 0 0 0 1px #f4e8d624;
+  position: relative;
+  z-index: 4;
+}
+
+.debate-position span {
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+.debate-position strong {
+  min-width: 4.9rem;
+  color: #f6c66f;
+  font-size: 0.95rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.debate-position.is-pro {
+  color: #dfffe9;
+  background: #57d98c14;
+  box-shadow: inset 0 0 0 1px #74e6a852, 0 0 1.7rem #57d98c1f;
+}
+
+.debate-position.is-pro strong {
+  color: #7be6a4;
+}
+
+.debate-position.is-con {
+  color: #ffe5df;
+  background: #ff766514;
+  box-shadow: inset 0 0 0 1px #ff766552, 0 0 1.7rem #ff76651f;
+}
+
+.debate-position.is-con strong {
+  color: #ff927f;
 }
 
 .roulette-hint {
@@ -1053,12 +1121,13 @@
   }
 
   .challenge-topbar .mode-option {
-    padding-inline: 0.65rem;
-    font-size: 0.84rem;
+    gap: 0.34rem;
+    padding-inline: 0.48rem;
+    font-size: 0.78rem;
   }
 
   .challenge-topbar .mode-emoji {
-    flex-basis: 1rem;
+    flex-basis: 0.95rem;
   }
 
   .challenge-reel {
@@ -1093,6 +1162,16 @@
 
   .roulette-hint {
     display: none;
+  }
+
+  .debate-position {
+    min-height: 2rem;
+    padding: 0.38rem 0.68rem;
+  }
+
+  .debate-position strong {
+    min-width: 4.4rem;
+    font-size: 0.86rem;
   }
 
   .challenge-reel .reel-phrase {
