@@ -985,13 +985,13 @@ export default function Home() {
   const challengeTitle =
     mode === "deep-research"
       ? "Research. Потом речь."
-      : `${speechClock}. Тема решает.`;
+      : "Говори сразу. Без подготовки.";
   const challengeSubtitle =
     mode === "deep-research"
       ? `${formatDuration(researchSeconds)} на разбор. Затем ${formatDuration(
           speechSeconds,
         )} на объяснение без шпаргалок.`
-      : `0:00 подготовки. ${formatDuration(speechSeconds)} на выпавшую тему.`;
+      : `Крути тему и объясняй её ${formatDuration(speechSeconds)} без паузы на разбор.`;
   const previousTopic = topicAtOffset(activeTopics, displayTopic, -1);
   const nextTopic = topicAtOffset(activeTopics, displayTopic, 1);
   const spinStageLabel =
