@@ -32,7 +32,8 @@ test("server-renders the speaking practice app shell", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /Speak/);
+  assert.match(html, /Думай быстро/);
+  assert.match(html, /говори ясно/);
   assert.match(html, /Разбери тему\. Объясни просто/);
   assert.match(html, /Экспромт/);
   assert.match(html, /С разбором/);
@@ -56,7 +57,7 @@ test("removes starter preview assets from the finished site", async () => {
   assert.match(page, /Тема и позиция выпадут сами/);
   assert.match(page, /aria-keyshortcuts="Enter Space"/);
   assert.match(layout, /lang="ru"/);
-  assert.match(layout, /thinkQuick \| 60 секунд на случайную тему/);
+  assert.match(layout, /Думай быстро, говори ясно\./);
   assert.match(css, /\.reel-phrase/);
   assert.match(css, /\.timer-overlay/);
   assert.doesNotMatch(page, /codex-preview|_sites-preview|SkeletonPreview/);

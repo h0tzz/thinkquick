@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "thinkQuick | 60 секунд на случайную тему",
+  title: "Думай быстро, говори ясно.",
   description:
-    "Видео-челлендж для речи: случайная тема, таймер, разбор и дебаты за или против.",
+    "Тренажёр речи: случайная тема, таймер, разбор, экспромт и дебаты.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

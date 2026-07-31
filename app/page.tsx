@@ -1483,7 +1483,10 @@ export default function Home() {
 
       <header className="brand challenge-brand">
         <div className="brand-lockup">
-          <h1 className="brand-mark">Speak</h1>
+          <h1 className="brand-mark">
+            <span>Думай быстро,</span>
+            <span>говори ясно.</span>
+          </h1>
         </div>
       </header>
 
