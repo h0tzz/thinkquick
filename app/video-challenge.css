@@ -118,6 +118,7 @@ body {
   justify-content: center;
   gap: 0.6rem;
   width: 100%;
+  margin-bottom: clamp(1rem, 2.8vh, 1.85rem);
 }
 
 .challenge-topbar .mode-switch {
@@ -226,37 +227,35 @@ body {
 }
 
 .challenge-clock {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.58rem;
-  width: fit-content;
-  min-height: 2.65rem;
-  padding: 0.42rem 0.76rem 0.46rem 0.86rem;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "label note"
+    "time time";
+  align-items: end;
+  gap: 0.34rem 0.9rem;
+  width: min(100%, 13.5rem);
+  min-height: 0;
+  padding: 0.78rem 0 0.7rem;
   position: relative;
   align-self: center;
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, #f6eee70d, #f6eee705) padding-box,
-    linear-gradient(110deg, #f6eee722, #760a0768, #f6eee70f) border-box;
-  border: 1px solid transparent;
-  box-shadow:
-    inset 0 1px 0 #ffffff10,
-    0 0.8rem 2rem #02071636;
+  border-top: 1px solid #f6eee72b;
+  border-bottom: 1px solid #f6eee716;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .challenge-clock::before {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 0.64rem;
-  width: 2px;
-  height: 1.1rem;
+  top: -1px;
+  left: 0;
+  width: 3.4rem;
+  height: 1px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #d8665f, #760a07);
-  box-shadow: 0 0 1rem #760a0775;
-  transform: translateY(-50%);
+  background: linear-gradient(90deg, #d8665f, #760a0700);
+  box-shadow: 0 0 0.85rem #760a0770;
 }
 
 .challenge-clock::after {
@@ -265,30 +264,40 @@ body {
 
 .challenge-clock-label,
 .challenge-clock-note {
-  color: #f6eee799;
+  color: #f6eee78f;
   font-family: var(--font-body);
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.16em;
   line-height: 1;
   text-transform: uppercase;
   position: relative;
   z-index: 1;
 }
 
+.challenge-clock-label {
+  grid-area: label;
+  color: #d8665f;
+}
+
 .challenge-clock-note {
-  padding-left: 0.62rem;
-  border-left: 1px solid #f6eee724;
+  grid-area: note;
+  justify-self: end;
+  padding-left: 0;
+  border-left: 0;
+  color: #f6eee766;
+  text-align: right;
 }
 
 .challenge-clock strong {
+  grid-area: time;
   margin: 0;
   color: #f6eee7;
   font-family: var(--font-display);
-  font-size: 1.62rem;
+  font-size: clamp(2.65rem, 4.1vw, 3.15rem);
   font-weight: 520;
   letter-spacing: 0;
-  line-height: 1;
+  line-height: 0.9;
   font-variant-numeric: tabular-nums;
   position: relative;
   z-index: 1;
@@ -303,12 +312,10 @@ body {
 }
 
 .is-debate-mode .challenge-clock {
-  background:
-    linear-gradient(180deg, #f6eee70c, #f6eee704) padding-box,
-    linear-gradient(130deg, #f6eee729, #760a075f, #f6eee712) border-box;
-  box-shadow:
-    inset 0 1px 0 #ffffff10,
-    0 0.8rem 2.1rem #0207163d;
+  border-top-color: #f6eee72b;
+  border-bottom-color: #f6eee716;
+  background: transparent;
+  box-shadow: none;
 }
 
 .is-debate-mode .challenge-clock strong {
@@ -360,7 +367,7 @@ body {
 
 .challenge-body {
   gap: 0.65rem;
-  margin-top: clamp(3rem, 6.2vh, 4.4rem);
+  margin-top: clamp(2.25rem, 4.8vh, 3.35rem);
 }
 
 .challenge-controls {
@@ -1131,25 +1138,21 @@ body {
   }
 
   .challenge-clock {
-    display: inline-flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.7rem;
-    width: fit-content;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: min(100%, 13rem);
     margin-inline: auto;
-    min-height: 2.75rem;
-    padding: 0.48rem 0.78rem 0.5rem 0.9rem;
+    padding: 0.72rem 0 0.62rem;
   }
 
   .challenge-clock::before {
-    top: 0.72rem;
-    bottom: 0.72rem;
+    top: -1px;
+    bottom: auto;
   }
 
   .challenge-clock strong {
     margin: 0;
-    font-size: 1.65rem;
+    font-size: 2.35rem;
   }
 }
 
@@ -1167,6 +1170,10 @@ body {
     gap: 0.55rem;
   }
 
+  .challenge-topbar {
+    margin-bottom: 1.1rem;
+  }
+
   .challenge-title {
     font-size: 2.85rem;
     line-height: 0.96;
@@ -1182,16 +1189,18 @@ body {
   }
 
   .challenge-clock {
-    min-height: 2.72rem;
+    width: 12.5rem;
+    padding-top: 0.66rem;
+    padding-bottom: 0.56rem;
   }
 
   .challenge-clock strong {
-    font-size: 1.62rem;
+    font-size: 2.25rem;
   }
 
   .challenge-body {
     gap: 0.45rem;
-    margin-top: 2.35rem;
+    margin-top: 1.9rem;
   }
 
   .challenge-reel {
