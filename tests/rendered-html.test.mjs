@@ -54,6 +54,7 @@ test("removes starter preview assets from the finished site", async () => {
   assert.match(page, /const GROUPS/);
   assert.match(page, /const DEBATE_TOPICS/);
   assert.match(page, /Защити позицию/);
+  assert.match(page, /aria-keyshortcuts="Enter Space"/);
   assert.match(layout, /lang="ru"/);
   assert.match(layout, /thinkQuick \| 60 секунд на случайную тему/);
   assert.match(css, /\.reel-phrase/);

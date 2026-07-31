@@ -584,6 +584,22 @@ function isEditableTarget(target: EventTarget | null) {
   );
 }
 
+function isInteractiveTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) {
+    return false;
+  }
+
+  return Boolean(
+    target.closest(
+      "button, a, input, textarea, select, [role='button'], [role='radio'], [role='option'], [role='slider']",
+    ),
+  );
+}
+
+function isSpinShortcutKey(event: globalThis.KeyboardEvent) {
+  return event.key === "Enter" || event.key === " " || event.key === "Spacebar";
+}
+
 function DurationField({
   label,
   hint,
@@ -1367,11 +1383,16 @@ export default function Home() {
 
   useEffect(() => {
     function handleKeydown(event: globalThis.KeyboardEvent) {
-      if (event.defaultPrevented || event.repeat || event.key !== "Enter") {
+      if (event.defaultPrevented || event.repeat || !isSpinShortcutKey(event)) {
         return;
       }
 
-      if (isEditableTarget(event.target) || controlsDisabled || activeTopics.length === 0) {
+      if (
+        isEditableTarget(event.target) ||
+        isInteractiveTarget(event.target) ||
+        controlsDisabled ||
+        activeTopics.length === 0
+      ) {
         return;
       }
 
@@ -1518,7 +1539,7 @@ export default function Home() {
             }`}
             disabled={controlsDisabled}
             onClick={spin}
-            aria-keyshortcuts="Enter"
+            aria-keyshortcuts="Enter Space"
             style={{ "--spin-progress": spinProgress } as CSSProperties}
             type="button"
           >
