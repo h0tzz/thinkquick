@@ -1086,19 +1086,15 @@ export default function Home() {
   const spinStageLabel =
     isSpinning
       ? spinStage === "locking"
-        ? mode === "debate"
-          ? "сейчас решит"
-          : "сейчас выпадет"
+        ? "фиксируем"
         : spinStage === "cruising"
-          ? mode === "debate"
-            ? "ищем спор"
-            : "мелькают темы"
-          : "поехали"
+          ? "выбор"
+          : "старт"
       : selectedTopic
         ? mode === "debate"
-          ? "твоя сторона"
-          : "вот твоя тема"
-        : "нажми на рулетку";
+          ? "позиция"
+          : "тема"
+        : "клик / enter";
   const selectedTopicLabel =
     selectedTopic && currentDebatePosition
       ? `${currentDebatePosition.label}: ${selectedTopic}`
@@ -1505,7 +1501,7 @@ export default function Home() {
           </div>
 
           <div className="challenge-clock" aria-label={`Время речи ${formatDuration(speechSeconds)}`}>
-            <span className="challenge-clock-label">на речь</span>
+            <span className="challenge-clock-label">речь</span>
             <strong>{speechClock}</strong>
             {mode === "deep-research" ? (
               <span className="challenge-clock-note">разбор {researchClock}</span>

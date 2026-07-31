@@ -226,43 +226,40 @@ body {
 }
 
 .challenge-clock {
-  display: grid;
-  justify-items: start;
-  align-content: center;
-  width: 100%;
-  min-height: 5.95rem;
-  padding: 0.85rem 1rem 0.92rem 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.58rem;
+  width: fit-content;
+  min-height: 2.9rem;
+  padding: 0.5rem 0.78rem 0.52rem 0.9rem;
   overflow: hidden;
   position: relative;
-  border-radius: 0.95rem;
+  align-self: center;
+  border-radius: 0.5rem;
   background:
-    radial-gradient(95% 80% at 100% 0%, #760a072e 0%, transparent 62%),
-    linear-gradient(145deg, #1a2036e8 0%, #11182fe8 58%, #0d1429e8 100%);
+    linear-gradient(180deg, #f6eee70c, #f6eee704) padding-box,
+    linear-gradient(130deg, #f6eee729, #760a075f, #f6eee712) border-box;
+  border: 1px solid transparent;
   box-shadow:
-    inset 0 0 0 1px #f6eee721,
     inset 0 1px 0 #ffffff10,
-    0 1rem 2.8rem #02071652;
+    0 0.8rem 2.1rem #0207163d;
 }
 
 .challenge-clock::before {
   content: "";
   position: absolute;
-  top: 0.82rem;
-  bottom: 0.82rem;
+  top: 0.58rem;
+  bottom: 0.58rem;
   left: 0;
-  width: 3px;
+  width: 2px;
   border-radius: 999px;
   background: linear-gradient(180deg, #d8665f, #760a07);
-  box-shadow: 0 0 1.3rem #760a0780;
+  box-shadow: 0 0 1rem #760a0775;
 }
 
 .challenge-clock::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, #ffffff10 0%, transparent 31%);
-  opacity: 0.62;
+  display: none;
 }
 
 .challenge-clock-label,
@@ -278,14 +275,19 @@ body {
   z-index: 1;
 }
 
+.challenge-clock-note {
+  padding-left: 0.62rem;
+  border-left: 1px solid #f6eee724;
+}
+
 .challenge-clock strong {
-  margin: 0.28rem 0 0.32rem;
+  margin: 0;
   color: #f6eee7;
   font-family: var(--font-display);
-  font-size: 2.72rem;
+  font-size: 1.82rem;
   font-weight: 520;
   letter-spacing: 0;
-  line-height: 0.9;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
   position: relative;
   z-index: 1;
@@ -301,12 +303,11 @@ body {
 
 .is-debate-mode .challenge-clock {
   background:
-    radial-gradient(95% 80% at 100% 0%, #760a0736 0%, transparent 62%),
-    linear-gradient(145deg, #1a2036e8 0%, #11182fe8 58%, #0d1429e8 100%);
+    linear-gradient(180deg, #f6eee70c, #f6eee704) padding-box,
+    linear-gradient(130deg, #f6eee729, #760a075f, #f6eee712) border-box;
   box-shadow:
-    inset 0 0 0 1px #f6eee721,
     inset 0 1px 0 #ffffff10,
-    0 1rem 2.8rem #02071652;
+    0 0.8rem 2.1rem #0207163d;
 }
 
 .is-debate-mode .challenge-clock strong {
@@ -358,6 +359,7 @@ body {
 
 .challenge-body {
   gap: 0.65rem;
+  margin-top: clamp(2.35rem, 5.4vh, 3.45rem);
 }
 
 .challenge-controls {
@@ -374,25 +376,19 @@ body {
 
 .challenge-reel {
   appearance: none;
-  border: 1px solid transparent;
-  border-radius: 1.05rem;
+  border: 0;
+  border-radius: 0;
   color: inherit;
   cursor: pointer;
   font: inherit;
   text-align: center;
-  background:
-    linear-gradient(180deg, #1a2036f0 0%, #101932f5 54%, #0a1129f5 100%) padding-box,
-    linear-gradient(135deg, #f6eee72a 0%, #760a0795 48%, #f6eee716 100%) border-box;
-  min-height: clamp(12.8rem, 26vw, 17.4rem);
-  gap: 0.48rem;
-  padding: 0.82rem clamp(0.9rem, 2vw, 1.28rem) 0.82rem;
+  background: transparent;
+  min-height: clamp(7.8rem, 15vw, 9.7rem);
+  gap: 0.58rem;
+  padding: 0;
   position: relative;
   isolation: isolate;
-  box-shadow:
-    inset 0 1px 0 #ffffff12,
-    inset 0 -1px 0 #0000008a,
-    0 1.5rem 4.8rem #02071682,
-    0 0 0 1px #0a1536;
+  box-shadow: none;
   transition: transform 0.25s cubic-bezier(0.18, 0.82, 0.18, 1);
 }
 
@@ -410,30 +406,19 @@ body {
   content: "";
   pointer-events: none;
   position: absolute;
-  inset: 0.5rem;
-  border-radius: 0.8rem;
+  inset: 2rem 8% 0.3rem;
+  border-radius: 999px;
   background:
-    linear-gradient(180deg, #ffffff0c 0%, transparent 34%, #00000018 100%),
-    radial-gradient(84% 80% at 50% 0%, #760a0724 0%, transparent 64%);
-  opacity: 1;
+    radial-gradient(72% 72% at 50% 45%, #760a073d 0%, transparent 70%),
+    radial-gradient(80% 90% at 50% 100%, #0207168c 0%, transparent 74%);
+  filter: blur(1.1rem);
+  opacity: 0.68;
   transition: opacity 0.25s, transform 0.25s;
   z-index: 1;
 }
 
 .challenge-reel::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  left: 11%;
-  right: 11%;
-  top: 49%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #760a07, #f6eee7d0, #760a07, transparent);
-  opacity: 0.28;
-  filter: blur(0.2px);
-  box-shadow: 0 0 1.45rem #760a078c;
-  z-index: 1;
-  transform: translateY(-50%);
+  display: none;
 }
 
 .challenge-reel:not(:disabled):hover::before {
@@ -456,14 +441,7 @@ body {
 
 .challenge-reel.is-spinning,
 .challenge-reel.is-locking {
-  background:
-    linear-gradient(180deg, #1d243df2 0%, #111a33f6 54%, #0a1129f5 100%) padding-box,
-    linear-gradient(135deg, #f6eee733 0%, #a31610bf 48%, #f6eee71d 100%) border-box;
-  box-shadow:
-    inset 0 1px 0 #ffffff12,
-    inset 0 -1px 0 #0000008a,
-    0 1.55rem 5rem #0207168f,
-    0 0 0 1px #760a0742;
+  box-shadow: none;
 }
 
 .challenge-reel.is-spinning .roulette-window::after {
@@ -481,19 +459,17 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  min-height: 1.28rem;
-  padding: 0.16rem 0.7rem 0.18rem;
-  border-radius: 999px;
-  color: #f6eee7bf;
-  background:
-    linear-gradient(180deg, #171b26f0, #0f1730f0) padding-box,
-    linear-gradient(90deg, #760a0780, #f6eee733, #760a0780) border-box;
-  border: 1px solid transparent;
-  box-shadow: 0 0.55rem 1.5rem #02071642;
+  align-self: flex-start;
+  min-height: 0.88rem;
+  padding: 0;
+  color: #c4534acc;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
   font-family: var(--font-body);
-  font-size: 0.74rem;
+  font-size: 0.66rem;
   font-weight: 850;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   line-height: 1;
   text-transform: uppercase;
   position: relative;
@@ -501,11 +477,11 @@ body {
 }
 
 .roulette-dot {
-  width: 0.38rem;
-  height: 0.38rem;
+  width: 0.3rem;
+  height: 0.3rem;
   border-radius: 50%;
   background: #d8665f;
-  box-shadow: 0 0 0 0.22rem #760a0750, 0 0 1.1rem currentColor;
+  box-shadow: 0 0 0 0.18rem #760a0738, 0 0 0.85rem #d8665f;
 }
 
 .challenge-reel.is-spinning .roulette-dot {
@@ -516,23 +492,22 @@ body {
   display: grid;
   place-items: center;
   width: 100%;
-  min-height: clamp(7.8rem, 15.8vw, 10.5rem);
+  min-height: clamp(5.2rem, 9.4vw, 6.9rem);
   overflow: hidden;
   position: relative;
   z-index: 2;
-  border: 1px solid #f6eee718;
-  border-radius: 0.68rem;
+  border: 1px solid #f6eee71f;
+  border-radius: 0.46rem;
   background:
     linear-gradient(90deg, #050918 0%, transparent 13%, transparent 87%, #050918 100%),
-    linear-gradient(180deg, #121936 0%, #0b1228 52%, #060b1a 100%),
-    repeating-linear-gradient(180deg, transparent 0 0.7rem, #ffffff06 0.72rem 0.78rem),
-    radial-gradient(ellipse at center, #2f1b31 0%, #151a2f 46%, #050918 100%);
+    linear-gradient(180deg, #111831 0%, #080f22 100%),
+    radial-gradient(ellipse at center, #2a1729 0%, #14192d 45%, #050918 100%);
   box-shadow:
-    inset 0 0 0 1px #760a0780,
-    inset 0 0 0 2px #050918c0,
-    inset 0 2.2rem 2.8rem #0000007a,
-    inset 0 -2.2rem 2.8rem #00000078,
-    0 1.1rem 3rem #020716a3;
+    inset 0 1px 0 #ffffff10,
+    inset 0 0 0 1px #760a0736,
+    inset 0 1.4rem 2.2rem #0000004f,
+    inset 0 -1.6rem 2.3rem #00000073,
+    0 0.9rem 2.6rem #0207168c;
 }
 
 .roulette-window::before {
@@ -541,7 +516,7 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at center, #f6eee719 0%, transparent 42%),
+    radial-gradient(ellipse at center, #f6eee712 0%, transparent 42%),
     linear-gradient(180deg, #050918 0%, transparent 22%, transparent 78%, #050918 100%),
     linear-gradient(90deg, #050918 0%, transparent 11%, transparent 89%, #050918 100%);
   z-index: 2;
@@ -553,10 +528,10 @@ body {
   position: absolute;
   inset: -28% -18%;
   background:
-    linear-gradient(105deg, transparent 36%, #f6eee712 44%, #d8665f1f 50%, transparent 61%),
-    repeating-linear-gradient(180deg, transparent 0 0.58rem, #ffffff04 0.62rem 0.68rem);
+    linear-gradient(105deg, transparent 40%, #f6eee70d 50%, transparent 61%),
+    repeating-linear-gradient(180deg, transparent 0 0.62rem, #ffffff03 0.66rem 0.7rem);
   mix-blend-mode: screen;
-  opacity: 0.58;
+  opacity: 0.32;
   transform: translateX(-28%);
   z-index: 3;
   animation: roulette-scan 3.8s ease-in-out infinite;
@@ -564,44 +539,42 @@ body {
 
 .roulette-edge {
   position: absolute;
-  left: 18%;
-  right: 18%;
+  left: 12%;
+  right: 12%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #760a07, #f6eee7bd, #760a07, transparent);
+  background: linear-gradient(90deg, transparent, #f6eee729, #f6eee766, #f6eee729, transparent);
   z-index: 5;
-  box-shadow: 0 0 1.1rem #760a0780;
+  box-shadow: none;
 }
 
 .roulette-edge.is-top {
-  top: 0.75rem;
+  top: 0;
 }
 
 .roulette-edge.is-bottom {
-  bottom: 0.75rem;
+  bottom: 0;
 }
 
 .roulette-marker {
   position: absolute;
   top: 50%;
   z-index: 6;
-  width: 0;
-  height: 0;
+  width: 2px;
+  height: 1.55rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, transparent, #d8665f, transparent);
   transform: translateY(-50%);
-  filter: drop-shadow(0 0 0.85rem #c4534ac0);
+  filter: drop-shadow(0 0 0.75rem #760a07b0);
 }
 
 .roulette-marker.is-left {
-  left: clamp(0.55rem, 2.4vw, 1.85rem);
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
-  border-left: 0.82rem solid #d8665f;
+  left: clamp(0.7rem, 2.2vw, 1.8rem);
+  border: 0;
 }
 
 .roulette-marker.is-right {
-  right: clamp(0.55rem, 2.4vw, 1.85rem);
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
-  border-right: 0.82rem solid #d8665f;
+  right: clamp(0.7rem, 2.2vw, 1.8rem);
+  border: 0;
 }
 
 .roulette-sheen {
@@ -610,10 +583,10 @@ body {
   inset: 0;
   z-index: 3;
   background:
-    linear-gradient(90deg, transparent, #760a0775, #f6eee7b8, #760a0775, transparent) center /
-      82% 1px no-repeat,
-    radial-gradient(ellipse at center, #f6eee719 0%, #760a0726 32%, transparent 58%);
-  opacity: 0.74;
+    linear-gradient(90deg, transparent, #760a0770, #f6eee782, #760a0770, transparent) center /
+      58% 1px no-repeat,
+    radial-gradient(ellipse at center, #f6eee710 0%, #760a071f 32%, transparent 58%);
+  opacity: 0.58;
 }
 
 .reel-ghost {
@@ -644,30 +617,30 @@ body {
 }
 
 .challenge-reel .reel-phrase {
-  width: min(100%, 18ch);
-  max-width: min(100%, 18ch);
-  font-size: clamp(3.25rem, 6.5vw, 4.75rem);
+  width: min(100%, 19ch);
+  max-width: min(100%, 19ch);
+  font-size: clamp(2.75rem, 5.3vw, 4.05rem);
   letter-spacing: 0;
   line-height: 0.98;
   position: relative;
   z-index: 7;
   text-shadow:
-    0 0 2.8rem #760a0770,
+    0 0 2rem #760a0754,
     0 0 1.1rem #020716,
     0 0.08rem 0 #000000a6;
 }
 
 .challenge-reel .reel-phrase.is-long {
-  width: min(100%, 20ch);
-  max-width: min(100%, 20ch);
-  font-size: clamp(2.45rem, 4.8vw, 3.35rem);
+  width: min(100%, 22ch);
+  max-width: min(100%, 22ch);
+  font-size: clamp(2.15rem, 4.2vw, 3rem);
   line-height: 1.05;
 }
 
 .challenge-reel .reel-phrase.is-extra-long {
-  width: min(100%, 24ch);
-  max-width: min(100%, 24ch);
-  font-size: clamp(1.9rem, 3.6vw, 2.55rem);
+  width: min(100%, 26ch);
+  max-width: min(100%, 26ch);
+  font-size: clamp(1.7rem, 3.2vw, 2.35rem);
   line-height: 1.12;
 }
 
@@ -693,14 +666,7 @@ body {
 }
 
 .challenge-reel.is-landed {
-  background:
-    linear-gradient(180deg, #1d243df2 0%, #111a33f6 54%, #0a1129f5 100%) padding-box,
-    linear-gradient(135deg, #f6eee733 0%, #a31610bf 48%, #f6eee71d 100%) border-box;
-  box-shadow:
-    inset 0 1px 0 #ffffff14,
-    inset 0 -1px 0 #0000008a,
-    0 1.55rem 5rem #0207168f,
-    0 0 0 1px #760a074a;
+  box-shadow: none;
 }
 
 .challenge-reel.is-landed .reel-ghost {
@@ -708,14 +674,14 @@ body {
 }
 
 .roulette-meter {
-  width: min(100%, 24rem);
-  height: 0.32rem;
+  width: min(100%, 19rem);
+  height: 0.16rem;
   border-radius: 999px;
-  background: #f6eee71c;
+  background: #f6eee714;
   overflow: hidden;
   position: relative;
   z-index: 4;
-  box-shadow: inset 0 0 0 1px #f6eee72b;
+  box-shadow: none;
 }
 
 .roulette-meter::after {
@@ -735,7 +701,7 @@ body {
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #760a07, #d8665f, #f6eee7);
-  box-shadow: 0 0 1.15rem #760a078a;
+  box-shadow: 0 0 0.75rem #760a0770;
   transform: scaleX(var(--spin-progress, 0));
   transform-origin: left center;
   transition: transform 80ms linear;
@@ -1182,30 +1148,30 @@ body {
 @keyframes jackpot-window {
   0% {
     box-shadow:
-      inset 0 0 0 1px #f6eee724,
-      inset 0 0 0 2px #760a0785,
-      inset 0 2.2rem 2.8rem #0000007a,
-      inset 0 -2.2rem 2.8rem #00000078,
-      0 1.15rem 3.4rem #0207168c;
+      inset 0 1px 0 #ffffff10,
+      inset 0 0 0 1px #760a0736,
+      inset 0 1.4rem 2.2rem #0000004f,
+      inset 0 -1.6rem 2.3rem #00000073,
+      0 0.9rem 2.6rem #0207168c;
   }
 
   45% {
     box-shadow:
-      inset 0 0 0 1px #f6eee73d,
-      inset 0 0 0 2px #d8665fc7,
-      inset 0 2.2rem 2.8rem #0000007a,
-      inset 0 -2.2rem 2.8rem #00000078,
-      0 0 3.6rem #760a078a,
-      0 1.3rem 3.8rem #0207168c;
+      inset 0 1px 0 #ffffff14,
+      inset 0 0 0 1px #d8665f8a,
+      inset 0 1.4rem 2.2rem #0000004f,
+      inset 0 -1.6rem 2.3rem #00000073,
+      0 0 2.2rem #760a0761,
+      0 0.9rem 2.8rem #0207168c;
   }
 
   100% {
     box-shadow:
-      inset 0 0 0 1px #f6eee724,
-      inset 0 0 0 2px #760a0785,
-      inset 0 2.2rem 2.8rem #0000007a,
-      inset 0 -2.2rem 2.8rem #00000078,
-      0 1.15rem 3.4rem #0207168c;
+      inset 0 1px 0 #ffffff10,
+      inset 0 0 0 1px #760a0736,
+      inset 0 1.4rem 2.2rem #0000004f,
+      inset 0 -1.6rem 2.3rem #00000073,
+      0 0.9rem 2.6rem #0207168c;
   }
 }
 
@@ -1276,15 +1242,15 @@ body {
   }
 
   .challenge-clock {
-    grid-template-columns: auto auto auto;
+    display: inline-flex;
+    flex-wrap: nowrap;
     justify-content: center;
-    justify-items: center;
     align-items: center;
     gap: 0.7rem;
-    width: min(100%, 24rem);
+    width: fit-content;
     margin-inline: auto;
-    min-height: 4rem;
-    padding: 0.65rem 1rem;
+    min-height: 2.75rem;
+    padding: 0.48rem 0.78rem 0.5rem 0.9rem;
   }
 
   .challenge-clock::before {
@@ -1294,7 +1260,7 @@ body {
 
   .challenge-clock strong {
     margin: 0;
-    font-size: 2.2rem;
+    font-size: 1.65rem;
   }
 }
 
@@ -1327,24 +1293,25 @@ body {
   }
 
   .challenge-clock {
-    min-height: 5.55rem;
+    min-height: 2.72rem;
   }
 
   .challenge-clock strong {
-    font-size: 2.55rem;
+    font-size: 1.62rem;
   }
 
   .challenge-body {
     gap: 0.45rem;
+    margin-top: 1.85rem;
   }
 
   .challenge-reel {
-    min-height: 10.8rem;
-    padding: 0.62rem clamp(0.7rem, 1.6vw, 1rem) 0.62rem;
+    min-height: 7.35rem;
+    padding: 0;
   }
 
   .roulette-window {
-    min-height: 6.35rem;
+    min-height: 4.9rem;
   }
 
   .reel-ghost {
@@ -1352,15 +1319,15 @@ body {
   }
 
   .challenge-reel .reel-phrase {
-    font-size: 3.45rem;
+    font-size: 3rem;
   }
 
   .challenge-reel .reel-phrase.is-long {
-    font-size: 2.65rem;
+    font-size: 2.3rem;
   }
 
   .challenge-reel .reel-phrase.is-extra-long {
-    font-size: 2.05rem;
+    font-size: 1.85rem;
   }
 
   .roulette-hint {
@@ -1400,20 +1367,20 @@ body {
   }
 
   .challenge-reel {
-    min-height: 10.5rem;
-    padding-inline: 0.55rem;
+    min-height: 7.35rem;
+    padding-inline: 0;
   }
 
   .roulette-window {
-    min-height: 5.95rem;
+    min-height: 4.85rem;
   }
 
   .roulette-edge.is-top {
-    top: 0.8rem;
+    top: 0;
   }
 
   .roulette-edge.is-bottom {
-    bottom: 0.8rem;
+    bottom: 0;
   }
 
   .reel-ghost {
