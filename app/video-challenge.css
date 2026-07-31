@@ -341,16 +341,24 @@ body {
 .challenge-reel {
   appearance: none;
   border: 0;
+  border-radius: 0.95rem;
   color: inherit;
   cursor: pointer;
   font: inherit;
   text-align: center;
-  background: transparent;
+  background:
+    radial-gradient(80% 90% at 50% 18%, #760a0724 0%, transparent 55%),
+    linear-gradient(180deg, #1a2036f2 0%, #101932fa 52%, #0a1129f7 100%);
   min-height: clamp(12.8rem, 26vw, 17.4rem);
   gap: 0.48rem;
-  padding: 0.35rem clamp(0.2rem, 1.4vw, 0.85rem) 0.18rem;
+  padding: 0.74rem clamp(0.7rem, 1.8vw, 1.1rem) 0.72rem;
   position: relative;
   isolation: isolate;
+  box-shadow:
+    inset 0 0 0 1px #f6eee71a,
+    inset 0 1px 0 #ffffff10,
+    0 1.4rem 4.5rem #02071670,
+    0 0 0 1px #0a1536;
   transition: transform 0.25s cubic-bezier(0.18, 0.82, 0.18, 1);
 }
 
@@ -368,16 +376,15 @@ body {
   content: "";
   pointer-events: none;
   position: absolute;
-  inset: 1.62rem 0.2rem 0.72rem;
-  border-radius: 0.72rem;
+  inset: -0.45rem -0.55rem -0.55rem;
+  border-radius: 1.1rem;
   background:
-    radial-gradient(ellipse at center, #760a0742 0%, #f6eee714 34%, transparent 66%),
-    linear-gradient(90deg, transparent, #760a072b 22%, #f6eee71d 50%, #760a072b 78%, transparent),
-    linear-gradient(180deg, #f6eee708, #00000000);
-  filter: blur(0.2px);
-  opacity: 0.95;
+    radial-gradient(70% 68% at 50% 54%, #760a074d 0%, transparent 70%),
+    linear-gradient(90deg, transparent, #f6eee710 20%, #760a072e 50%, #f6eee710 80%, transparent);
+  filter: blur(0.45rem);
+  opacity: 0.72;
   transition: opacity 0.25s, transform 0.25s;
-  z-index: -1;
+  z-index: 0;
 }
 
 .challenge-reel::after {
@@ -387,11 +394,11 @@ body {
   left: 11%;
   right: 11%;
   top: 49%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #c4534ad9, #f6eee7a8, transparent);
-  opacity: 0.58;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #760a07, #f6eee7bf, #760a07, transparent);
+  opacity: 0.72;
   filter: blur(0.2px);
-  box-shadow: 0 0 1.2rem #760a075c;
+  box-shadow: 0 0 1.45rem #760a078c;
   z-index: 3;
   transform: translateY(-50%);
 }
@@ -414,6 +421,15 @@ body {
   animation: roulette-spin-glow 0.72s ease-in-out infinite;
 }
 
+.challenge-reel.is-spinning,
+.challenge-reel.is-locking {
+  box-shadow:
+    inset 0 0 0 1px #c4534a42,
+    inset 0 1px 0 #ffffff12,
+    0 1.55rem 4.8rem #02071682,
+    0 0 0 1px #760a073d;
+}
+
 .challenge-reel.is-spinning .roulette-window::after {
   opacity: 0.78;
   animation-duration: 0.62s;
@@ -430,7 +446,11 @@ body {
   justify-content: center;
   gap: 0.45rem;
   min-height: 1.35rem;
-  color: #c4534adb;
+  padding: 0.18rem 0.64rem;
+  border-radius: 999px;
+  color: #d8665f;
+  background: #760a071f;
+  box-shadow: inset 0 0 0 1px #c4534a38;
   font-family: var(--font-body);
   font-size: 0.74rem;
   font-weight: 850;
@@ -446,7 +466,7 @@ body {
   height: 0.38rem;
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 0 0.22rem #760a0738, 0 0 1rem currentColor;
+  box-shadow: 0 0 0 0.22rem #760a0750, 0 0 1.1rem currentColor;
 }
 
 .challenge-reel.is-spinning .roulette-dot {
@@ -461,16 +481,17 @@ body {
   overflow: hidden;
   position: relative;
   z-index: 2;
-  border-radius: 0.72rem;
+  border-radius: 0.78rem;
   background:
-    linear-gradient(90deg, #0a1536 0%, transparent 13%, transparent 87%, #0a1536 100%),
-    radial-gradient(ellipse at center, #24283a 0%, #171b26 47%, #0a1536 100%);
+    linear-gradient(90deg, #050918 0%, transparent 13%, transparent 87%, #050918 100%),
+    linear-gradient(180deg, #121a35 0%, #0c142b 52%, #080e22 100%),
+    radial-gradient(ellipse at center, #2a1a2d 0%, #171b26 46%, #050918 100%);
   box-shadow:
-    inset 0 0 0 1px #c4534a61,
-    inset 0 0 0 2px #f6eee712,
+    inset 0 0 0 1px #f6eee724,
+    inset 0 0 0 2px #760a0785,
     inset 0 2.2rem 2.8rem #0000007a,
     inset 0 -2.2rem 2.8rem #00000078,
-    0 1.2rem 4rem #00000042;
+    0 1.15rem 3.4rem #0207168c;
 }
 
 .roulette-window::before {
@@ -479,9 +500,9 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at center, #f6eee716 0%, transparent 42%),
-    linear-gradient(180deg, #0a1536 0%, transparent 22%, transparent 78%, #0a1536 100%),
-    linear-gradient(90deg, #0a1536 0%, transparent 11%, transparent 89%, #0a1536 100%);
+    radial-gradient(ellipse at center, #f6eee719 0%, transparent 42%),
+    linear-gradient(180deg, #050918 0%, transparent 22%, transparent 78%, #050918 100%),
+    linear-gradient(90deg, #050918 0%, transparent 11%, transparent 89%, #050918 100%);
   z-index: 2;
 }
 
@@ -505,9 +526,9 @@ body {
   left: 16%;
   right: 16%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #c4534ade, #f6eee7a5, transparent);
+  background: linear-gradient(90deg, transparent, #760a07, #f6eee7bd, #760a07, transparent);
   z-index: 5;
-  box-shadow: 0 0 1rem #760a075c;
+  box-shadow: 0 0 1.1rem #760a0780;
 }
 
 .roulette-edge.is-top {
@@ -525,21 +546,21 @@ body {
   width: 0;
   height: 0;
   transform: translateY(-50%);
-  filter: drop-shadow(0 0 0.75rem #c4534a99);
+  filter: drop-shadow(0 0 0.85rem #c4534ac0);
 }
 
 .roulette-marker.is-left {
   left: clamp(0.65rem, 2.8vw, 2.2rem);
   border-top: 0.5rem solid transparent;
   border-bottom: 0.5rem solid transparent;
-  border-left: 0.78rem solid #c4534a;
+  border-left: 0.82rem solid #d8665f;
 }
 
 .roulette-marker.is-right {
   right: clamp(0.65rem, 2.8vw, 2.2rem);
   border-top: 0.5rem solid transparent;
   border-bottom: 0.5rem solid transparent;
-  border-right: 0.78rem solid #c4534a;
+  border-right: 0.82rem solid #d8665f;
 }
 
 .roulette-sheen {
@@ -547,8 +568,8 @@ body {
   position: absolute;
   inset: 0;
   z-index: 3;
-  background: radial-gradient(ellipse at center, #760a0738 0%, transparent 43%);
-  opacity: 0.65;
+  background: radial-gradient(ellipse at center, #f6eee719 0%, #760a0726 32%, transparent 58%);
+  opacity: 0.74;
 }
 
 .reel-ghost {
@@ -586,7 +607,10 @@ body {
   line-height: 0.98;
   position: relative;
   z-index: 7;
-  text-shadow: 0 0 2.4rem #760a0748, 0 0 0.9rem #000;
+  text-shadow:
+    0 0 2.8rem #760a0770,
+    0 0 1.1rem #020716,
+    0 0.08rem 0 #000000a6;
 }
 
 .challenge-reel .reel-phrase.is-long {
@@ -606,22 +630,30 @@ body {
 .challenge-reel.is-spinning .reel-phrase {
   color: #fff7f3;
   animation: roulette-topic 95ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  text-shadow: 0 0 2.2rem #c4534a66, 0 0 0.8rem #000;
+  text-shadow: 0 0 2.6rem #c4534a85, 0 0 1rem #020716;
 }
 
 .challenge-reel.is-locking .reel-phrase {
   color: #fff7f3;
-  text-shadow: 0 0 2.8rem #a316105c, 0 0 1rem #000;
+  text-shadow: 0 0 3rem #a3161080, 0 0 1rem #020716;
 }
 
 .challenge-reel.is-landed .reel-phrase {
   color: #fff7f3;
-  text-shadow: 0 0 2.8rem #c4534a75, 0 0 1rem #000;
+  text-shadow: 0 0 3.1rem #c4534a94, 0 0 1.1rem #020716;
   animation: landed-pulse 0.62s cubic-bezier(0.18, 0.82, 0.18, 1) both;
 }
 
 .challenge-reel.is-landed .roulette-window {
   animation: jackpot-window 0.72s cubic-bezier(0.18, 0.82, 0.18, 1) both;
+}
+
+.challenge-reel.is-landed {
+  box-shadow:
+    inset 0 0 0 1px #c4534a40,
+    inset 0 1px 0 #ffffff14,
+    0 1.55rem 5rem #02071682,
+    0 0 0 1px #760a074a;
 }
 
 .challenge-reel.is-landed .reel-ghost {
@@ -630,13 +662,13 @@ body {
 
 .roulette-meter {
   width: min(100%, 24rem);
-  height: 0.26rem;
+  height: 0.32rem;
   border-radius: 999px;
-  background: #f6eee711;
+  background: #f6eee71c;
   overflow: hidden;
   position: relative;
   z-index: 4;
-  box-shadow: inset 0 0 0 1px #f6eee71f;
+  box-shadow: inset 0 0 0 1px #f6eee72b;
 }
 
 .roulette-meter::after {
@@ -655,8 +687,8 @@ body {
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #760a07, #c4534a, #f6eee7);
-  box-shadow: 0 0 1rem #760a0770;
+  background: linear-gradient(90deg, #760a07, #d8665f, #f6eee7);
+  box-shadow: 0 0 1.15rem #760a078a;
   transform: scaleX(var(--spin-progress, 0));
   transform-origin: left center;
   transition: transform 80ms linear;
@@ -1103,30 +1135,30 @@ body {
 @keyframes jackpot-window {
   0% {
     box-shadow:
-      inset 0 0 0 1px #c4534a61,
-      inset 0 0 0 2px #f6eee712,
+      inset 0 0 0 1px #f6eee724,
+      inset 0 0 0 2px #760a0785,
       inset 0 2.2rem 2.8rem #0000007a,
       inset 0 -2.2rem 2.8rem #00000078,
-      0 1.2rem 4rem #00000042;
+      0 1.15rem 3.4rem #0207168c;
   }
 
   45% {
     box-shadow:
-      inset 0 0 0 1px #c4534ac2,
-      inset 0 0 0 2px #f6eee740,
+      inset 0 0 0 1px #f6eee73d,
+      inset 0 0 0 2px #d8665fc7,
       inset 0 2.2rem 2.8rem #0000007a,
       inset 0 -2.2rem 2.8rem #00000078,
-      0 0 4.5rem #760a075c,
-      0 1.2rem 4rem #00000042;
+      0 0 3.6rem #760a078a,
+      0 1.3rem 3.8rem #0207168c;
   }
 
   100% {
     box-shadow:
-      inset 0 0 0 1px #c4534a61,
-      inset 0 0 0 2px #f6eee712,
+      inset 0 0 0 1px #f6eee724,
+      inset 0 0 0 2px #760a0785,
       inset 0 2.2rem 2.8rem #0000007a,
       inset 0 -2.2rem 2.8rem #00000078,
-      0 1.2rem 4rem #00000042;
+      0 1.15rem 3.4rem #0207168c;
   }
 }
 
