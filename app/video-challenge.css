@@ -231,31 +231,32 @@ body {
   justify-content: flex-start;
   gap: 0.58rem;
   width: fit-content;
-  min-height: 2.9rem;
-  padding: 0.5rem 0.78rem 0.52rem 0.9rem;
+  min-height: 2.65rem;
+  padding: 0.42rem 0.76rem 0.46rem 0.86rem;
   overflow: hidden;
   position: relative;
   align-self: center;
-  border-radius: 0.5rem;
+  border-radius: 999px;
   background:
-    linear-gradient(180deg, #f6eee70c, #f6eee704) padding-box,
-    linear-gradient(130deg, #f6eee729, #760a075f, #f6eee712) border-box;
+    linear-gradient(180deg, #f6eee70d, #f6eee705) padding-box,
+    linear-gradient(110deg, #f6eee722, #760a0768, #f6eee70f) border-box;
   border: 1px solid transparent;
   box-shadow:
     inset 0 1px 0 #ffffff10,
-    0 0.8rem 2.1rem #0207163d;
+    0 0.8rem 2rem #02071636;
 }
 
 .challenge-clock::before {
   content: "";
   position: absolute;
-  top: 0.58rem;
-  bottom: 0.58rem;
-  left: 0;
+  top: 50%;
+  left: 0.64rem;
   width: 2px;
+  height: 1.1rem;
   border-radius: 999px;
   background: linear-gradient(180deg, #d8665f, #760a07);
   box-shadow: 0 0 1rem #760a0775;
+  transform: translateY(-50%);
 }
 
 .challenge-clock::after {
@@ -284,7 +285,7 @@ body {
   margin: 0;
   color: #f6eee7;
   font-family: var(--font-display);
-  font-size: 1.82rem;
+  font-size: 1.62rem;
   font-weight: 520;
   letter-spacing: 0;
   line-height: 1;
@@ -359,7 +360,7 @@ body {
 
 .challenge-body {
   gap: 0.65rem;
-  margin-top: clamp(2.35rem, 5.4vh, 3.45rem);
+  margin-top: clamp(3rem, 6.2vh, 4.4rem);
 }
 
 .challenge-controls {
@@ -383,8 +384,8 @@ body {
   font: inherit;
   text-align: center;
   background: transparent;
-  min-height: clamp(7.8rem, 15vw, 9.7rem);
-  gap: 0.58rem;
+  min-height: clamp(8.8rem, 15.5vw, 11.4rem);
+  gap: 0.36rem;
   padding: 0;
   position: relative;
   isolation: isolate;
@@ -406,15 +407,16 @@ body {
   content: "";
   pointer-events: none;
   position: absolute;
-  inset: 2rem 8% 0.3rem;
-  border-radius: 999px;
+  inset: 0.65rem 5% -0.2rem;
+  border-radius: 50%;
   background:
-    radial-gradient(72% 72% at 50% 45%, #760a073d 0%, transparent 70%),
-    radial-gradient(80% 90% at 50% 100%, #0207168c 0%, transparent 74%);
-  filter: blur(1.1rem);
-  opacity: 0.68;
+    radial-gradient(58% 62% at 50% 48%, #760a0745 0%, transparent 68%),
+    radial-gradient(70% 68% at 50% 54%, #f6eee70f 0%, transparent 54%),
+    radial-gradient(74% 78% at 50% 100%, #0207168a 0%, transparent 76%);
+  filter: blur(1.35rem);
+  opacity: 0.72;
   transition: opacity 0.25s, transform 0.25s;
-  z-index: 1;
+  z-index: 0;
 }
 
 .challenge-reel::after {
@@ -444,22 +446,12 @@ body {
   box-shadow: none;
 }
 
-.challenge-reel.is-spinning .roulette-window::after {
-  opacity: 0.78;
-  animation-duration: 0.62s;
-}
-
-.challenge-reel.is-locking .roulette-window::after {
-  opacity: 0.72;
-  animation-duration: 1.1s;
-}
-
 .roulette-status {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  align-self: flex-start;
+  align-self: center;
   min-height: 0.88rem;
   padding: 0;
   color: #c4534acc;
@@ -488,115 +480,79 @@ body {
   animation: roulette-dot 0.42s linear infinite;
 }
 
-.roulette-window {
+.reveal-stage {
   display: grid;
   place-items: center;
   width: 100%;
-  min-height: clamp(5.2rem, 9.4vw, 6.9rem);
-  overflow: hidden;
+  min-height: clamp(6.8rem, 12vw, 9rem);
+  overflow: visible;
   position: relative;
   z-index: 2;
-  border: 1px solid #f6eee71f;
-  border-radius: 0.46rem;
-  background:
-    linear-gradient(90deg, #050918 0%, transparent 13%, transparent 87%, #050918 100%),
-    linear-gradient(180deg, #111831 0%, #080f22 100%),
-    radial-gradient(ellipse at center, #2a1729 0%, #14192d 45%, #050918 100%);
-  box-shadow:
-    inset 0 1px 0 #ffffff10,
-    inset 0 0 0 1px #760a0736,
-    inset 0 1.4rem 2.2rem #0000004f,
-    inset 0 -1.6rem 2.3rem #00000073,
-    0 0.9rem 2.6rem #0207168c;
 }
 
-.roulette-window::before {
+.reveal-stage::before {
   content: "";
   pointer-events: none;
   position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at center, #f6eee712 0%, transparent 42%),
-    linear-gradient(180deg, #050918 0%, transparent 22%, transparent 78%, #050918 100%),
-    linear-gradient(90deg, #050918 0%, transparent 11%, transparent 89%, #050918 100%);
-  z-index: 2;
-}
-
-.roulette-window::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: -28% -18%;
-  background:
-    linear-gradient(105deg, transparent 40%, #f6eee70d 50%, transparent 61%),
-    repeating-linear-gradient(180deg, transparent 0 0.62rem, #ffffff03 0.66rem 0.7rem);
-  mix-blend-mode: screen;
-  opacity: 0.32;
-  transform: translateX(-28%);
-  z-index: 3;
-  animation: roulette-scan 3.8s ease-in-out infinite;
-}
-
-.roulette-edge {
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #f6eee729, #f6eee766, #f6eee729, transparent);
-  z-index: 5;
-  box-shadow: none;
-}
-
-.roulette-edge.is-top {
-  top: 0;
-}
-
-.roulette-edge.is-bottom {
-  bottom: 0;
-}
-
-.roulette-marker {
-  position: absolute;
+  left: 9%;
+  right: 9%;
   top: 50%;
-  z-index: 6;
-  width: 2px;
-  height: 1.55rem;
-  border-radius: 999px;
-  background: linear-gradient(180deg, transparent, #d8665f, transparent);
+  height: 1px;
+  background:
+    linear-gradient(90deg, transparent 0%, #760a0738 24%, #f6eee76b 50%, #760a0738 76%, transparent 100%);
+  opacity: 0.5;
   transform: translateY(-50%);
-  filter: drop-shadow(0 0 0.75rem #760a07b0);
+  z-index: 1;
 }
 
-.roulette-marker.is-left {
-  left: clamp(0.7rem, 2.2vw, 1.8rem);
-  border: 0;
-}
-
-.roulette-marker.is-right {
-  right: clamp(0.7rem, 2.2vw, 1.8rem);
-  border: 0;
-}
-
-.roulette-sheen {
+.reveal-stage::after {
+  content: "";
   pointer-events: none;
   position: absolute;
-  inset: 0;
+  inset: -4% 7%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, #760a072b 0%, #760a0714 34%, transparent 67%);
+  filter: blur(1.1rem);
+  opacity: 0.82;
+  z-index: 0;
+}
+
+.reveal-flash {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 50%;
+  height: 1px;
   z-index: 3;
   background:
-    linear-gradient(90deg, transparent, #760a0770, #f6eee782, #760a0770, transparent) center /
-      58% 1px no-repeat,
-    radial-gradient(ellipse at center, #f6eee710 0%, #760a071f 32%, transparent 58%);
-  opacity: 0.58;
+    linear-gradient(90deg, transparent 0%, #d8665f 22%, #f6eee7 50%, #d8665f 78%, transparent 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 1.35rem #d8665f78;
+  opacity: 0;
+  transform: translateY(-50%) scaleX(0.48);
+  transform-origin: center;
+}
+
+.challenge-reel.is-spinning .reveal-stage::before {
+  opacity: 0.74;
+}
+
+.challenge-reel.is-locking .reveal-stage::before {
+  opacity: 0.82;
+}
+
+.challenge-reel.is-landed .reveal-flash {
+  animation: reveal-flash 0.64s cubic-bezier(0.18, 0.82, 0.18, 1) both;
 }
 
 .reel-ghost {
-  max-width: min(100%, 26ch);
-  color: #f6eee740;
+  max-width: min(100%, 24ch);
+  color: #f6eee728;
   font-family: var(--font-display);
-  font-size: 1.18rem;
+  font-size: 1.04rem;
   line-height: 1;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   white-space: nowrap;
   opacity: 0;
   transform: translateY(var(--ghost-y));
@@ -609,38 +565,42 @@ body {
 }
 
 .reel-ghost.is-prev {
-  --ghost-y: -2.35rem;
+  --ghost-y: -2.65rem;
 }
 
 .reel-ghost.is-next {
-  --ghost-y: 2.35rem;
+  --ghost-y: 2.65rem;
 }
 
 .challenge-reel .reel-phrase {
-  width: min(100%, 19ch);
-  max-width: min(100%, 19ch);
-  font-size: clamp(2.75rem, 5.3vw, 4.05rem);
+  width: min(100%, 18ch);
+  max-width: min(100%, 18ch);
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  text-wrap: balance;
+  font-size: clamp(3.2rem, 6.9vw, 5.35rem);
   letter-spacing: 0;
   line-height: 0.98;
   position: relative;
-  z-index: 7;
+  z-index: 4;
   text-shadow:
-    0 0 2rem #760a0754,
-    0 0 1.1rem #020716,
+    0 0 2.2rem #760a075c,
+    0 0 1.15rem #020716,
     0 0.08rem 0 #000000a6;
 }
 
 .challenge-reel .reel-phrase.is-long {
-  width: min(100%, 22ch);
-  max-width: min(100%, 22ch);
-  font-size: clamp(2.15rem, 4.2vw, 3rem);
+  width: min(100%, 21ch);
+  max-width: min(100%, 21ch);
+  font-size: clamp(2.45rem, 5.2vw, 3.85rem);
   line-height: 1.05;
 }
 
 .challenge-reel .reel-phrase.is-extra-long {
-  width: min(100%, 26ch);
-  max-width: min(100%, 26ch);
-  font-size: clamp(1.7rem, 3.2vw, 2.35rem);
+  width: min(100%, 25ch);
+  max-width: min(100%, 25ch);
+  font-size: clamp(1.82rem, 4vw, 2.9rem);
   line-height: 1.12;
 }
 
@@ -657,12 +617,8 @@ body {
 
 .challenge-reel.is-landed .reel-phrase {
   color: #fff7f3;
-  text-shadow: 0 0 3.1rem #c4534a94, 0 0 1.1rem #020716;
+  text-shadow: 0 0 3.25rem #c4534a96, 0 0 1.1rem #020716;
   animation: landed-pulse 0.62s cubic-bezier(0.18, 0.82, 0.18, 1) both;
-}
-
-.challenge-reel.is-landed .roulette-window {
-  animation: jackpot-window 0.72s cubic-bezier(0.18, 0.82, 0.18, 1) both;
 }
 
 .challenge-reel.is-landed {
@@ -671,40 +627,6 @@ body {
 
 .challenge-reel.is-landed .reel-ghost {
   opacity: 0;
-}
-
-.roulette-meter {
-  width: min(100%, 19rem);
-  height: 0.16rem;
-  border-radius: 999px;
-  background: #f6eee714;
-  overflow: hidden;
-  position: relative;
-  z-index: 4;
-  box-shadow: none;
-}
-
-.roulette-meter::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(90deg, transparent, #f6eee77a, transparent);
-  opacity: 0.35;
-  transform: translateX(-100%);
-  animation: meter-shimmer 2.2s ease-in-out infinite;
-}
-
-.roulette-meter span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #760a07, #d8665f, #f6eee7);
-  box-shadow: 0 0 0.75rem #760a0770;
-  transform: scaleX(var(--spin-progress, 0));
-  transform-origin: left center;
-  transition: transform 80ms linear;
 }
 
 .debate-position {
@@ -777,87 +699,87 @@ body {
   --r: 0deg;
   --delay: 0ms;
   position: absolute;
-  top: 48%;
+  top: 50%;
   left: 50%;
-  width: 0.62rem;
-  height: 0.12rem;
+  width: 0.48rem;
+  height: 1px;
   border-radius: 999px;
-  background: #c4534a;
-  box-shadow: 0 0 0.85rem #760a0770;
+  background: #d8665f;
+  box-shadow: 0 0 0.72rem #d8665f70;
   opacity: 0;
   transform-origin: left center;
-  animation: casino-spark 0.78s cubic-bezier(0.2, 0.78, 0.2, 1) var(--delay) both;
+  animation: casino-spark 0.68s cubic-bezier(0.2, 0.78, 0.2, 1) var(--delay) both;
 }
 
 .casino-sparks span:nth-child(2n) {
   background: #f6eee7;
-  box-shadow: 0 0 0.85rem #f6eee766;
+  box-shadow: 0 0 0.72rem #f6eee752;
 }
 
 .casino-sparks span:nth-child(1) {
-  --tx: -11rem;
-  --ty: -2.2rem;
+  --tx: -7.5rem;
+  --ty: -1.7rem;
   --r: -18deg;
 }
 
 .casino-sparks span:nth-child(2) {
-  --tx: -8rem;
-  --ty: 2.9rem;
+  --tx: -5.8rem;
+  --ty: 2.15rem;
   --r: 22deg;
   --delay: 35ms;
 }
 
 .casino-sparks span:nth-child(3) {
-  --tx: -3.5rem;
-  --ty: -4rem;
+  --tx: -2.6rem;
+  --ty: -3.15rem;
   --r: 78deg;
   --delay: 70ms;
 }
 
 .casino-sparks span:nth-child(4) {
-  --tx: 3.7rem;
-  --ty: -4.2rem;
+  --tx: 2.7rem;
+  --ty: -3.2rem;
   --r: 102deg;
 }
 
 .casino-sparks span:nth-child(5) {
-  --tx: 8.7rem;
-  --ty: 2.5rem;
+  --tx: 6.2rem;
+  --ty: 1.95rem;
   --r: -24deg;
   --delay: 45ms;
 }
 
 .casino-sparks span:nth-child(6) {
-  --tx: 11rem;
-  --ty: -2.1rem;
+  --tx: 7.5rem;
+  --ty: -1.65rem;
   --r: 17deg;
   --delay: 85ms;
 }
 
 .casino-sparks span:nth-child(7) {
-  --tx: -5.6rem;
-  --ty: 4.5rem;
+  --tx: -4rem;
+  --ty: 3.2rem;
   --r: -56deg;
   --delay: 95ms;
 }
 
 .casino-sparks span:nth-child(8) {
-  --tx: 5.4rem;
-  --ty: 4.3rem;
+  --tx: 4rem;
+  --ty: 3.1rem;
   --r: 56deg;
   --delay: 65ms;
 }
 
 .casino-sparks span:nth-child(9) {
-  --tx: -1rem;
-  --ty: -5rem;
+  --tx: -0.8rem;
+  --ty: -3.8rem;
   --r: 90deg;
   --delay: 20ms;
 }
 
 .casino-sparks span:nth-child(10) {
-  --tx: 1rem;
-  --ty: 5rem;
+  --tx: 0.8rem;
+  --ty: 3.8rem;
   --r: -90deg;
   --delay: 110ms;
 }
@@ -1095,18 +1017,6 @@ body {
   }
 }
 
-@keyframes roulette-scan {
-  0%,
-  34% {
-    transform: translateX(-32%);
-  }
-
-  72%,
-  100% {
-    transform: translateX(32%);
-  }
-}
-
 @keyframes roulette-topic {
   0% {
     opacity: 0.35;
@@ -1145,44 +1055,23 @@ body {
   }
 }
 
-@keyframes jackpot-window {
+@keyframes reveal-flash {
   0% {
-    box-shadow:
-      inset 0 1px 0 #ffffff10,
-      inset 0 0 0 1px #760a0736,
-      inset 0 1.4rem 2.2rem #0000004f,
-      inset 0 -1.6rem 2.3rem #00000073,
-      0 0.9rem 2.6rem #0207168c;
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0.36);
+    filter: blur(0.4px);
   }
 
-  45% {
-    box-shadow:
-      inset 0 1px 0 #ffffff14,
-      inset 0 0 0 1px #d8665f8a,
-      inset 0 1.4rem 2.2rem #0000004f,
-      inset 0 -1.6rem 2.3rem #00000073,
-      0 0 2.2rem #760a0761,
-      0 0.9rem 2.8rem #0207168c;
+  34% {
+    opacity: 0.92;
+    transform: translateY(-50%) scaleX(1);
+    filter: blur(0);
   }
 
   100% {
-    box-shadow:
-      inset 0 1px 0 #ffffff10,
-      inset 0 0 0 1px #760a0736,
-      inset 0 1.4rem 2.2rem #0000004f,
-      inset 0 -1.6rem 2.3rem #00000073,
-      0 0.9rem 2.6rem #0207168c;
-  }
-}
-
-@keyframes meter-shimmer {
-  0%,
-  42% {
-    transform: translateX(-110%);
-  }
-
-  100% {
-    transform: translateX(110%);
+    opacity: 0;
+    transform: translateY(-50%) scaleX(1.08);
+    filter: blur(0.7px);
   }
 }
 
@@ -1302,16 +1191,16 @@ body {
 
   .challenge-body {
     gap: 0.45rem;
-    margin-top: 1.85rem;
+    margin-top: 2.35rem;
   }
 
   .challenge-reel {
-    min-height: 7.35rem;
+    min-height: 7.8rem;
     padding: 0;
   }
 
-  .roulette-window {
-    min-height: 4.9rem;
+  .reveal-stage {
+    min-height: 5.8rem;
   }
 
   .reel-ghost {
@@ -1319,15 +1208,15 @@ body {
   }
 
   .challenge-reel .reel-phrase {
-    font-size: 3rem;
+    font-size: 3.35rem;
   }
 
   .challenge-reel .reel-phrase.is-long {
-    font-size: 2.3rem;
+    font-size: 2.55rem;
   }
 
   .challenge-reel .reel-phrase.is-extra-long {
-    font-size: 1.85rem;
+    font-size: 2rem;
   }
 
   .roulette-hint {
@@ -1367,20 +1256,12 @@ body {
   }
 
   .challenge-reel {
-    min-height: 7.35rem;
+    min-height: 7.6rem;
     padding-inline: 0;
   }
 
-  .roulette-window {
-    min-height: 4.85rem;
-  }
-
-  .roulette-edge.is-top {
-    top: 0;
-  }
-
-  .roulette-edge.is-bottom {
-    bottom: 0;
+  .reveal-stage {
+    min-height: 5.65rem;
   }
 
   .reel-ghost {
@@ -1432,21 +1313,7 @@ body {
   }
 
   .casino-sparks span {
-    width: 0.48rem;
-  }
-
-  .roulette-marker.is-left {
-    left: 0.52rem;
-    border-top-width: 0.38rem;
-    border-bottom-width: 0.38rem;
-    border-left-width: 0.58rem;
-  }
-
-  .roulette-marker.is-right {
-    right: 0.52rem;
-    border-top-width: 0.38rem;
-    border-bottom-width: 0.38rem;
-    border-right-width: 0.58rem;
+    width: 0.38rem;
   }
 
   .casino-sparks span:nth-child(1) {
@@ -1517,9 +1384,7 @@ body {
   .challenge-reel.is-spinning .reel-phrase,
   .challenge-reel.is-spinning .roulette-dot,
   .challenge-reel.is-landed .reel-phrase,
-  .challenge-reel.is-landed .roulette-window,
-  .roulette-meter::after,
-  .roulette-window::after,
+  .challenge-reel.is-landed .reveal-flash,
   .casino-sparks span,
   .timer-overlay.is-final-seconds .timer-ring {
     animation: none;

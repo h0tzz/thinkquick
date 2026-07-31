@@ -1042,7 +1042,6 @@ export default function Home() {
   const [isSpinning, setIsSpinning] = useState(false);
   const [isLanded, setIsLanded] = useState(false);
   const [spinStage, setSpinStage] = useState<SpinStage>("idle");
-  const [spinProgress, setSpinProgress] = useState(0);
   const [timerState, setTimerState] = useState<TimerState>("idle");
   const [remaining, setRemaining] = useState(60);
   const [reelKey, setReelKey] = useState(0);
@@ -1286,7 +1285,6 @@ export default function Home() {
     setDebatePosition(null);
     setIsLanded(false);
     setSpinStage("idle");
-    setSpinProgress(0);
     setReelKey((key) => key + 1);
   }
 
@@ -1317,7 +1315,6 @@ export default function Home() {
     setIsSpinning(true);
     setIsLanded(false);
     setSpinStage("accelerating");
-    setSpinProgress(0);
     setSelectedTopic(null);
     setDebatePosition(null);
 
@@ -1340,7 +1337,6 @@ export default function Home() {
       const nextStage: SpinStage =
         raw > 0.76 ? "locking" : raw > 0.2 ? "cruising" : "accelerating";
 
-      setSpinProgress(raw);
       setSpinStage(nextStage);
 
       if (step !== lastSpinStepRef.current) {
@@ -1369,7 +1365,6 @@ export default function Home() {
       setIsSpinning(false);
       setIsLanded(true);
       setSpinStage("landed");
-      setSpinProgress(1);
       playFinish();
       spinFrameRef.current = null;
     };
@@ -1536,19 +1531,14 @@ export default function Home() {
             disabled={controlsDisabled}
             onClick={spin}
             aria-keyshortcuts="Enter Space"
-            style={{ "--spin-progress": spinProgress } as CSSProperties}
             type="button"
           >
             <div className="roulette-status" aria-hidden="true">
               <span className="roulette-dot" />
               <span>{spinStageLabel}</span>
             </div>
-            <div className="roulette-window">
-              <span className="roulette-edge is-top" aria-hidden="true" />
-              <span className="roulette-edge is-bottom" aria-hidden="true" />
-              <span className="roulette-marker is-left" aria-hidden="true" />
-              <span className="roulette-marker is-right" aria-hidden="true" />
-              <span className="roulette-sheen" aria-hidden="true" />
+            <div className="reveal-stage">
+              <span className="reveal-flash" aria-hidden="true" />
               <span className="reel-ghost is-prev" aria-hidden="true">
                 {previousTopic}
               </span>
@@ -1561,9 +1551,6 @@ export default function Home() {
               <span className="reel-ghost is-next" aria-hidden="true">
                 {nextTopic}
               </span>
-            </div>
-            <div className="roulette-meter" aria-hidden="true">
-              <span />
             </div>
             {mode === "debate" ? (
               <div
