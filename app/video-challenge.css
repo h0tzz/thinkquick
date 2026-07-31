@@ -1,11 +1,35 @@
+:root {
+  --ink: #f6eee7;
+  --muted: #f6eee7b8;
+  --accent: #760a07;
+  --accent-bright: #a31610;
+  --accent-soft: #c4534a;
+  --research: #d8c9bf;
+  --navy: #0a1536;
+  --surface: #171b26;
+  --surface-soft: #202433;
+  --scroll-track: #0a1536;
+  --scroll-thumb: #760a0770;
+  --scroll-thumb-hover: #a31610;
+}
+
+body {
+  background: #0a1536;
+}
+
 .challenge-page {
+  background: #0a1536;
   justify-content: flex-start;
   padding: 1.1rem max(1rem, env(safe-area-inset-right, 0px)) 2rem
     max(1rem, env(safe-area-inset-left, 0px));
 }
 
 .challenge-page .atmosphere {
-  background: linear-gradient(180deg, #101816 0%, #08110f 58%, #071014 100%);
+  background:
+    radial-gradient(72% 56% at 16% 12%, #760a0736 0%, transparent 58%),
+    radial-gradient(65% 50% at 84% 18%, #24305578 0%, transparent 56%),
+    radial-gradient(70% 44% at 52% 100%, #760a071f 0%, transparent 62%),
+    linear-gradient(180deg, #0a1536 0%, #11182c 48%, #171b26 100%);
 }
 
 .challenge-page .atmosphere::after {
@@ -28,7 +52,7 @@
 
 .brand-kicker {
   margin: 0 0 0.35rem;
-  color: #f6c66fcc;
+  color: #c4534acc;
   font-family: var(--font-body);
   font-size: 0.68rem;
   font-weight: 750;
@@ -55,9 +79,9 @@
   min-height: 2.15rem;
   padding: 0.34rem 0.72rem;
   border-radius: 999px;
-  color: #f4e8d6;
-  background: #f4e8d60f;
-  box-shadow: inset 0 0 0 1px #f4e8d633;
+  color: #f6eee7;
+  background: #f6eee710;
+  box-shadow: inset 0 0 0 1px #f6eee733;
   font-size: 0.78rem;
   font-weight: 750;
   letter-spacing: 0.08em;
@@ -65,15 +89,15 @@
 }
 
 .truth-pill.is-hot {
-  color: #211710;
-  background: #f6c66f;
-  box-shadow: 0 12px 32px #f6c66f26;
+  color: #fff7f3;
+  background: #760a07;
+  box-shadow: 0 12px 32px #760a0738;
 }
 
 .truth-pill.is-sound {
-  color: #dff8ff;
-  background: #5ed7ff14;
-  box-shadow: inset 0 0 0 1px #5ed7ff55;
+  color: #f6eee7;
+  background: #171b2685;
+  box-shadow: inset 0 0 0 1px #f6eee738;
 }
 
 .truth-icon {
@@ -104,9 +128,9 @@
   min-height: 3.15rem;
   padding: var(--tab-pad);
   overflow: hidden;
-  background: linear-gradient(180deg, #f4e8d610, #f4e8d608);
+  background: linear-gradient(180deg, #f6eee712, #f6eee706);
   box-shadow:
-    inset 0 0 0 1px #f4e8d638,
+    inset 0 0 0 1px #f6eee738,
     0 14px 34px #00000026;
 }
 
@@ -115,8 +139,8 @@
   bottom: var(--tab-pad);
   left: var(--tab-pad);
   width: calc((100% - (var(--tab-pad) * 2)) / 3);
-  background: linear-gradient(180deg, #cd8250, #b86e41);
-  box-shadow: 0 10px 24px #c47a4a38, inset 0 1px 0 #ffe0b840;
+  background: linear-gradient(180deg, #a31610, #760a07);
+  box-shadow: 0 12px 28px #760a0752, inset 0 1px 0 #ffffff24;
 }
 
 .challenge-topbar .mode-option {
@@ -129,11 +153,11 @@
 }
 
 .challenge-topbar .mode-option:not(.is-active):hover {
-  color: #fff3df;
+  color: #f6eee7;
 }
 
 .challenge-topbar .mode-option.is-active {
-  color: #17120f;
+  color: #fff7f3;
 }
 
 .challenge-topbar .mode-emoji {
@@ -164,7 +188,7 @@
 
 .challenge-kicker {
   margin: 0 0 0.42rem;
-  color: #f6c66fcc;
+  color: #c4534acc;
   font-family: var(--font-body);
   font-size: 0.78rem;
   font-weight: 800;
@@ -176,7 +200,7 @@
 .challenge-title {
   margin: 0;
   max-width: 14ch;
-  color: #fff3df;
+  color: #f6eee7;
   font-family: var(--font-display);
   font-size: 3.05rem;
   font-weight: 520;
@@ -194,7 +218,7 @@
 .challenge-subtitle {
   max-width: 38ch;
   margin: 0.5rem 0 0;
-  color: #f4e8d6bd;
+  color: #f6eee7bd;
   font-family: var(--font-body);
   font-size: 0.98rem;
   font-weight: 520;
@@ -209,14 +233,14 @@
   padding: 0.8rem;
   border-radius: 0.45rem;
   background:
-    linear-gradient(180deg, #f6c66f12, #5ed7ff0a),
-    linear-gradient(180deg, #f4e8d608, #f4e8d603);
-  box-shadow: inset 0 0 0 1px #f6c66f42;
+    linear-gradient(180deg, #760a071f, #0a15362b),
+    linear-gradient(180deg, #f6eee708, #f6eee703);
+  box-shadow: inset 0 0 0 1px #760a075c;
 }
 
 .challenge-clock-label,
 .challenge-clock-note {
-  color: #f4e8d6b3;
+  color: #f6eee7b3;
   font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 800;
@@ -227,7 +251,7 @@
 
 .challenge-clock strong {
   margin: 0.35rem 0;
-  color: #f6c66f;
+  color: #c4534a;
   font-family: var(--font-display);
   font-size: 3.05rem;
   font-weight: 520;
@@ -241,18 +265,18 @@
 }
 
 .is-debate-mode .challenge-kicker {
-  color: #ff9a88;
+  color: #d36c63;
 }
 
 .is-debate-mode .challenge-clock {
   background:
-    linear-gradient(180deg, #ff766512, #f6c66f0a),
-    linear-gradient(180deg, #f4e8d608, #f4e8d603);
-  box-shadow: inset 0 0 0 1px #ff76654d;
+    linear-gradient(180deg, #760a0729, #c4534a0d),
+    linear-gradient(180deg, #f6eee708, #f6eee703);
+  box-shadow: inset 0 0 0 1px #c4534a5c;
 }
 
 .is-debate-mode .challenge-clock strong {
-  color: #ff7665;
+  color: #c4534a;
 }
 
 .challenge-stakes {
@@ -271,8 +295,8 @@
   min-height: 2.7rem;
   padding: 0.62rem 0.8rem;
   border-radius: 0.5rem;
-  background: linear-gradient(180deg, #08100fcc, #08100f78);
-  box-shadow: inset 0 0 0 1px #f4e8d629, 0 14px 34px #00000026;
+  background: linear-gradient(180deg, #171b26e6, #10182bba);
+  box-shadow: inset 0 0 0 1px #f6eee729, 0 14px 34px #00000026;
 }
 
 .stake span,
@@ -284,7 +308,7 @@
 }
 
 .stake span {
-  color: #f4e8d6a3;
+  color: #f6eee7a3;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -336,7 +360,7 @@
 }
 
 .challenge-reel:focus-visible {
-  outline: 2px solid #f6c66f;
+  outline: 2px solid #c4534a;
   outline-offset: 0.35rem;
 }
 
@@ -347,9 +371,9 @@
   inset: 1.62rem 0.2rem 0.72rem;
   border-radius: 0.72rem;
   background:
-    radial-gradient(ellipse at center, #f6c66f28 0%, #5ed7ff16 34%, transparent 66%),
-    linear-gradient(90deg, transparent, #f6c66f18 22%, #5ed7ff1c 50%, #f6c66f18 78%, transparent),
-    linear-gradient(180deg, #f4e8d608, #00000000);
+    radial-gradient(ellipse at center, #760a0742 0%, #f6eee714 34%, transparent 66%),
+    linear-gradient(90deg, transparent, #760a072b 22%, #f6eee71d 50%, #760a072b 78%, transparent),
+    linear-gradient(180deg, #f6eee708, #00000000);
   filter: blur(0.2px);
   opacity: 0.95;
   transition: opacity 0.25s, transform 0.25s;
@@ -364,10 +388,10 @@
   right: 11%;
   top: 49%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #f6c66fb3, #5ed7ffad, transparent);
+  background: linear-gradient(90deg, transparent, #c4534ad9, #f6eee7a8, transparent);
   opacity: 0.58;
   filter: blur(0.2px);
-  box-shadow: 0 0 1.2rem #f6c66f40;
+  box-shadow: 0 0 1.2rem #760a075c;
   z-index: 3;
   transform: translateY(-50%);
 }
@@ -406,7 +430,7 @@
   justify-content: center;
   gap: 0.45rem;
   min-height: 1.35rem;
-  color: #f6c66fdb;
+  color: #c4534adb;
   font-family: var(--font-body);
   font-size: 0.74rem;
   font-weight: 850;
@@ -422,7 +446,7 @@
   height: 0.38rem;
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 0 0.22rem #f6c66f24, 0 0 1rem currentColor;
+  box-shadow: 0 0 0 0.22rem #760a0738, 0 0 1rem currentColor;
 }
 
 .challenge-reel.is-spinning .roulette-dot {
@@ -439,11 +463,11 @@
   z-index: 2;
   border-radius: 0.72rem;
   background:
-    linear-gradient(90deg, #040908 0%, transparent 13%, transparent 87%, #040908 100%),
-    radial-gradient(ellipse at center, #263321 0%, #101812 47%, #050b0a 100%);
+    linear-gradient(90deg, #0a1536 0%, transparent 13%, transparent 87%, #0a1536 100%),
+    radial-gradient(ellipse at center, #24283a 0%, #171b26 47%, #0a1536 100%);
   box-shadow:
-    inset 0 0 0 1px #f6c66f4a,
-    inset 0 0 0 2px #5ed7ff12,
+    inset 0 0 0 1px #c4534a61,
+    inset 0 0 0 2px #f6eee712,
     inset 0 2.2rem 2.8rem #0000007a,
     inset 0 -2.2rem 2.8rem #00000078,
     0 1.2rem 4rem #00000042;
@@ -455,9 +479,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at center, #fff0bf18 0%, transparent 42%),
-    linear-gradient(180deg, #050b0a 0%, transparent 22%, transparent 78%, #050b0a 100%),
-    linear-gradient(90deg, #050b0a 0%, transparent 11%, transparent 89%, #050b0a 100%);
+    radial-gradient(ellipse at center, #f6eee716 0%, transparent 42%),
+    linear-gradient(180deg, #0a1536 0%, transparent 22%, transparent 78%, #0a1536 100%),
+    linear-gradient(90deg, #0a1536 0%, transparent 11%, transparent 89%, #0a1536 100%);
   z-index: 2;
 }
 
@@ -467,7 +491,7 @@
   position: absolute;
   inset: -28% -18%;
   background:
-    linear-gradient(105deg, transparent 36%, #fff2c50e 44%, #5ed7ff1d 50%, transparent 61%),
+    linear-gradient(105deg, transparent 36%, #f6eee70f 44%, #c4534a24 50%, transparent 61%),
     repeating-linear-gradient(180deg, transparent 0 0.58rem, #ffffff06 0.62rem 0.68rem);
   mix-blend-mode: screen;
   opacity: 0.58;
@@ -481,9 +505,9 @@
   left: 16%;
   right: 16%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #f6c66fde, #5ed7ffb5, transparent);
+  background: linear-gradient(90deg, transparent, #c4534ade, #f6eee7a5, transparent);
   z-index: 5;
-  box-shadow: 0 0 1rem #f6c66f33;
+  box-shadow: 0 0 1rem #760a075c;
 }
 
 .roulette-edge.is-top {
@@ -501,21 +525,21 @@
   width: 0;
   height: 0;
   transform: translateY(-50%);
-  filter: drop-shadow(0 0 0.75rem #f6c66f99);
+  filter: drop-shadow(0 0 0.75rem #c4534a99);
 }
 
 .roulette-marker.is-left {
   left: clamp(0.65rem, 2.8vw, 2.2rem);
   border-top: 0.5rem solid transparent;
   border-bottom: 0.5rem solid transparent;
-  border-left: 0.78rem solid #f6c66f;
+  border-left: 0.78rem solid #c4534a;
 }
 
 .roulette-marker.is-right {
   right: clamp(0.65rem, 2.8vw, 2.2rem);
   border-top: 0.5rem solid transparent;
   border-bottom: 0.5rem solid transparent;
-  border-right: 0.78rem solid #f6c66f;
+  border-right: 0.78rem solid #c4534a;
 }
 
 .roulette-sheen {
@@ -523,13 +547,13 @@
   position: absolute;
   inset: 0;
   z-index: 3;
-  background: radial-gradient(ellipse at center, #f6c66f24 0%, transparent 43%);
+  background: radial-gradient(ellipse at center, #760a0738 0%, transparent 43%);
   opacity: 0.65;
 }
 
 .reel-ghost {
   max-width: min(100%, 26ch);
-  color: #f4e8d640;
+  color: #f6eee740;
   font-family: var(--font-display);
   font-size: 1.18rem;
   line-height: 1;
@@ -562,7 +586,7 @@
   line-height: 0.98;
   position: relative;
   z-index: 7;
-  text-shadow: 0 0 2.4rem #f6c66f30, 0 0 0.9rem #000;
+  text-shadow: 0 0 2.4rem #760a0748, 0 0 0.9rem #000;
 }
 
 .challenge-reel .reel-phrase.is-long {
@@ -580,19 +604,19 @@
 }
 
 .challenge-reel.is-spinning .reel-phrase {
-  color: #fff6e7;
+  color: #fff7f3;
   animation: roulette-topic 95ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  text-shadow: 0 0 2.2rem #f6c66f55, 0 0 0.8rem #000;
+  text-shadow: 0 0 2.2rem #c4534a66, 0 0 0.8rem #000;
 }
 
 .challenge-reel.is-locking .reel-phrase {
-  color: #fff8ed;
-  text-shadow: 0 0 2.8rem #ff533f48, 0 0 1rem #000;
+  color: #fff7f3;
+  text-shadow: 0 0 2.8rem #a316105c, 0 0 1rem #000;
 }
 
 .challenge-reel.is-landed .reel-phrase {
-  color: #fff6e7;
-  text-shadow: 0 0 2.8rem #f6c66f66, 0 0 1rem #000;
+  color: #fff7f3;
+  text-shadow: 0 0 2.8rem #c4534a75, 0 0 1rem #000;
   animation: landed-pulse 0.62s cubic-bezier(0.18, 0.82, 0.18, 1) both;
 }
 
@@ -608,11 +632,11 @@
   width: min(100%, 24rem);
   height: 0.26rem;
   border-radius: 999px;
-  background: #f4e8d611;
+  background: #f6eee711;
   overflow: hidden;
   position: relative;
   z-index: 4;
-  box-shadow: inset 0 0 0 1px #f4e8d61f;
+  box-shadow: inset 0 0 0 1px #f6eee71f;
 }
 
 .roulette-meter::after {
@@ -620,7 +644,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, transparent, #fff5cf7a, transparent);
+  background: linear-gradient(90deg, transparent, #f6eee77a, transparent);
   opacity: 0.35;
   transform: translateX(-100%);
   animation: meter-shimmer 2.2s ease-in-out infinite;
@@ -631,8 +655,8 @@
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #f6c66f, #ff725f, #5ed7ff);
-  box-shadow: 0 0 1rem #f6c66f66;
+  background: linear-gradient(90deg, #760a07, #c4534a, #f6eee7);
+  box-shadow: 0 0 1rem #760a0770;
   transform: scaleX(var(--spin-progress, 0));
   transform-origin: left center;
   transition: transform 80ms linear;
@@ -646,14 +670,14 @@
   min-height: 2.15rem;
   margin-top: 0.08rem;
   padding: 0.42rem 0.82rem;
-  color: #f4e8d6b3;
+  color: #f6eee7b3;
   font-family: var(--font-body);
   letter-spacing: 0.12em;
   line-height: 1;
   text-transform: uppercase;
   border-radius: 999px;
-  background: #f4e8d60b;
-  box-shadow: inset 0 0 0 1px #f4e8d624;
+  background: #f6eee70b;
+  box-shadow: inset 0 0 0 1px #f6eee724;
   position: relative;
   z-index: 4;
 }
@@ -665,30 +689,30 @@
 
 .debate-position strong {
   min-width: 4.9rem;
-  color: #f6c66f;
+  color: #c4534a;
   font-size: 0.95rem;
   font-weight: 900;
   text-align: center;
 }
 
 .debate-position.is-pro {
-  color: #dfffe9;
-  background: #57d98c14;
-  box-shadow: inset 0 0 0 1px #74e6a852, 0 0 1.7rem #57d98c1f;
+  color: #fff4ee;
+  background: #760a071f;
+  box-shadow: inset 0 0 0 1px #c4534a66, 0 0 1.7rem #760a0733;
 }
 
 .debate-position.is-pro strong {
-  color: #7be6a4;
+  color: #f6eee7;
 }
 
 .debate-position.is-con {
   color: #ffe5df;
-  background: #ff766514;
-  box-shadow: inset 0 0 0 1px #ff766552, 0 0 1.7rem #ff76651f;
+  background: #171b26b8;
+  box-shadow: inset 0 0 0 1px #760a0785, 0 0 1.7rem #760a072e;
 }
 
 .debate-position.is-con strong {
-  color: #ff927f;
+  color: #c4534a;
 }
 
 .roulette-hint {
@@ -713,16 +737,16 @@
   width: 0.62rem;
   height: 0.12rem;
   border-radius: 999px;
-  background: #f6c66f;
-  box-shadow: 0 0 0.85rem #f6c66f66;
+  background: #c4534a;
+  box-shadow: 0 0 0.85rem #760a0770;
   opacity: 0;
   transform-origin: left center;
   animation: casino-spark 0.78s cubic-bezier(0.2, 0.78, 0.2, 1) var(--delay) both;
 }
 
 .casino-sparks span:nth-child(2n) {
-  background: #5ed7ff;
-  box-shadow: 0 0 0.85rem #5ed7ff66;
+  background: #f6eee7;
+  box-shadow: 0 0 0.85rem #f6eee766;
 }
 
 .casino-sparks span:nth-child(1) {
@@ -812,23 +836,181 @@
   margin-top: 0.25rem;
 }
 
+.challenge-page .btn:focus-visible,
+.challenge-page .settings-trigger:focus-visible,
+.challenge-page .niche-option:focus-visible,
+.challenge-page .niche-trigger:focus-visible {
+  outline-color: #c4534a;
+}
+
+.challenge-page .btn.primary {
+  color: #fff7f3;
+  background: #760a07;
+  box-shadow: 0 12px 30px #760a074d;
+}
+
+.challenge-page .btn.primary:not(:disabled):hover {
+  background: #a31610;
+}
+
+.challenge-page .btn.secondary {
+  color: #f6eee7;
+  box-shadow: inset 0 0 0 1.5px #f6eee745;
+}
+
+.challenge-page .btn.secondary:not(:disabled):hover {
+  background: #f6eee70d;
+  box-shadow: inset 0 0 0 1.5px #c4534a8c;
+}
+
+.challenge-page .settings-trigger {
+  color: #f6eee7b8;
+  background: #f6eee70d;
+  box-shadow: inset 0 0 0 1px #f6eee72e;
+}
+
+.challenge-page .settings-trigger:not(:disabled):hover,
+.challenge-page .settings.is-open .settings-trigger {
+  color: #f6eee7;
+  background: #760a071f;
+  box-shadow: inset 0 0 0 1px #c4534a80;
+}
+
+.challenge-page .settings-overlay {
+  background:
+    radial-gradient(70% 55% at 50% 45%, #760a0729, transparent 60%),
+    radial-gradient(90% 80% at 50% 100%, #0a153673, transparent 55%),
+    #0a1536e8;
+}
+
+.challenge-page .settings-panel,
+.challenge-page .niche-menu {
+  background: #171b26;
+  box-shadow:
+    inset 0 0 0 1px #f6eee71f,
+    0 24px 60px #0000008c;
+}
+
+.challenge-page .settings-note {
+  border-top-color: #f6eee71a;
+}
+
+.challenge-page .duration-label,
+.challenge-page .reel-eyebrow,
+.challenge-page .timer-topic,
+.challenge-page .niche-option.is-active {
+  color: #c4534a;
+}
+
+.challenge-page .duration-slider {
+  background: #f6eee71f;
+}
+
+.challenge-page .duration-slider::-webkit-slider-runnable-track {
+  background: #f6eee71f;
+}
+
+.challenge-page .duration-slider::-moz-range-track {
+  background: #f6eee71f;
+}
+
+.challenge-page .duration-slider::-webkit-slider-thumb {
+  background: #760a07;
+  box-shadow: 0 0 0 4px #760a0738;
+}
+
+.challenge-page .duration-slider::-moz-range-thumb {
+  background: #760a07;
+  box-shadow: 0 0 0 4px #760a0738;
+}
+
+.challenge-page .duration-slider:hover::-webkit-slider-thumb,
+.challenge-page .duration-slider:focus-visible::-webkit-slider-thumb {
+  background: #a31610;
+  box-shadow: 0 0 0 5px #760a0752;
+}
+
+.challenge-page .duration-slider:hover::-moz-range-thumb,
+.challenge-page .duration-slider:focus-visible::-moz-range-thumb {
+  background: #a31610;
+  box-shadow: 0 0 0 5px #760a0752;
+}
+
+.challenge-page .niche-trigger,
+.challenge-page .speech-stage {
+  color: #f6eee7;
+  background: #f6eee70d;
+  box-shadow: inset 0 0 0 1px #f6eee72e;
+}
+
+.challenge-page .niche-trigger:not(:disabled):hover,
+.challenge-page .niche-select.is-open .niche-trigger {
+  background: #760a071f;
+  box-shadow: inset 0 0 0 1px #c4534a80;
+}
+
+.challenge-page .niche-menu {
+  scrollbar-color: #760a0770 #171b26;
+}
+
+.challenge-page .niche-menu::-webkit-scrollbar-track {
+  background: #171b26;
+}
+
+.challenge-page .niche-menu::-webkit-scrollbar-thumb {
+  border-color: #171b26;
+}
+
+.challenge-page .niche-option:hover {
+  background: #f6eee712;
+}
+
+.challenge-page .niche-option.is-active {
+  background: #760a0729;
+}
+
+.challenge-page .timer-overlay {
+  background:
+    radial-gradient(70% 55% at 50% 45%, #760a0729, transparent 60%),
+    radial-gradient(90% 80% at 50% 100%, #0a153673, transparent 55%),
+    #0a1536f0;
+}
+
+.challenge-page .timer-ring {
+  background: radial-gradient(circle at center, #171b26 62%, transparent 63%),
+    conic-gradient(#760a07 calc(var(--p) * 1turn), #f6eee71f 0);
+}
+
+.challenge-page .timer-overlay.is-research .timer-ring {
+  background: radial-gradient(circle at center, #171b26 62%, transparent 63%),
+    conic-gradient(#d8c9bf calc(var(--p) * 1turn), #f6eee71f 0);
+}
+
+.challenge-page .speech-stage.is-hit {
+  color: #fff7f3;
+  background: #760a0738;
+  box-shadow:
+    inset 0 0 0 1px #c4534a8c,
+    0 0 24px #760a0738;
+}
+
 .timer-overlay.is-warning-seconds .timer-ring {
-  background: radial-gradient(circle at center, #141a17 62%, transparent 63%),
-    conic-gradient(#f6c66f calc(var(--p) * 1turn), #f4e8d61f 0);
+  background: radial-gradient(circle at center, #171b26 62%, transparent 63%),
+    conic-gradient(#c4534a calc(var(--p) * 1turn), #f6eee71f 0);
 }
 
 .timer-overlay.is-warning-seconds .timer-digits {
-  color: #f6c66f;
+  color: #c4534a;
 }
 
 .timer-overlay.is-final-seconds .timer-ring {
-  background: radial-gradient(circle at center, #141a17 62%, transparent 63%),
-    conic-gradient(#ff533f calc(var(--p) * 1turn), #f4e8d61f 0);
+  background: radial-gradient(circle at center, #171b26 62%, transparent 63%),
+    conic-gradient(#a31610 calc(var(--p) * 1turn), #f6eee71f 0);
   animation: final-seconds 0.82s ease-in-out infinite;
 }
 
 .timer-overlay.is-final-seconds .timer-digits {
-  color: #ff7665;
+  color: #c4534a;
 }
 
 @keyframes roulette-dot {
@@ -921,8 +1103,8 @@
 @keyframes jackpot-window {
   0% {
     box-shadow:
-      inset 0 0 0 1px #f6c66f4a,
-      inset 0 0 0 2px #5ed7ff12,
+      inset 0 0 0 1px #c4534a61,
+      inset 0 0 0 2px #f6eee712,
       inset 0 2.2rem 2.8rem #0000007a,
       inset 0 -2.2rem 2.8rem #00000078,
       0 1.2rem 4rem #00000042;
@@ -930,18 +1112,18 @@
 
   45% {
     box-shadow:
-      inset 0 0 0 1px #f6c66fa8,
-      inset 0 0 0 2px #5ed7ff52,
+      inset 0 0 0 1px #c4534ac2,
+      inset 0 0 0 2px #f6eee740,
       inset 0 2.2rem 2.8rem #0000007a,
       inset 0 -2.2rem 2.8rem #00000078,
-      0 0 4.5rem #f6c66f42,
+      0 0 4.5rem #760a075c,
       0 1.2rem 4rem #00000042;
   }
 
   100% {
     box-shadow:
-      inset 0 0 0 1px #f6c66f4a,
-      inset 0 0 0 2px #5ed7ff12,
+      inset 0 0 0 1px #c4534a61,
+      inset 0 0 0 2px #f6eee712,
       inset 0 2.2rem 2.8rem #0000007a,
       inset 0 -2.2rem 2.8rem #00000078,
       0 1.2rem 4rem #00000042;
