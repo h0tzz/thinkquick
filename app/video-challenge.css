@@ -174,59 +174,61 @@ body {
 
 .challenge-hero {
   display: grid;
-  grid-template-columns: minmax(0, 31rem);
+  grid-template-columns: minmax(0, 36rem);
   align-items: center;
   justify-content: center;
-  width: min(560px, 100%);
+  width: min(640px, 100%);
   padding-top: 0;
 }
 
 .challenge-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-width: 0;
-  text-align: left;
+  text-align: center;
 }
 
 .challenge-kicker {
-  margin: 0 0 0.42rem;
-  color: #c4534acc;
+  margin: 0 0 0.5rem;
+  color: #f6eee775;
   font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.16em;
   line-height: 1;
   text-transform: uppercase;
 }
 
 .challenge-title {
   margin: 0;
-  max-width: 14ch;
+  max-width: 20ch;
   color: #f6eee7;
   font-family: var(--font-display);
-  font-size: 3.05rem;
+  font-size: clamp(2.15rem, 4.6vw, 3.05rem);
   font-weight: 520;
   letter-spacing: 0;
-  line-height: 1;
+  line-height: 0.98;
   text-wrap: balance;
 }
 
 .is-research-mode .challenge-title {
-  max-width: 18ch;
-  font-size: 3rem;
-  line-height: 1;
+  max-width: 20ch;
 }
 
 .challenge-subtitle {
-  max-width: 38ch;
-  margin: 0.5rem 0 0;
-  color: #f6eee7bd;
+  max-width: 46ch;
+  margin: 0.64rem auto 0;
+  color: #f6eee796;
   font-family: var(--font-body);
-  font-size: 0.98rem;
-  font-weight: 520;
+  font-size: 0.95rem;
+  font-weight: 560;
   line-height: 1.45;
+  text-wrap: balance;
 }
 
 .is-debate-mode .challenge-kicker {
-  color: #d36c63;
+  color: #f6eee775;
 }
 
 .challenge-stakes {
@@ -1033,10 +1035,10 @@ body {
 
   .challenge-title,
   .is-research-mode .challenge-title {
-    max-width: 17ch;
+    max-width: 19ch;
     margin-inline: auto;
-    font-size: 2.5rem;
-    line-height: 1.02;
+    font-size: 2.18rem;
+    line-height: 1;
   }
 
   .challenge-subtitle {
@@ -1064,17 +1066,17 @@ body {
   }
 
   .challenge-title {
-    font-size: 2.85rem;
-    line-height: 0.96;
+    font-size: 2.28rem;
+    line-height: 1;
   }
 
   .is-research-mode .challenge-title {
-    font-size: 2.75rem;
+    font-size: 2.28rem;
   }
 
   .challenge-subtitle {
     margin-top: 0.45rem;
-    font-size: 0.96rem;
+    font-size: 0.9rem;
   }
 
   .challenge-body {

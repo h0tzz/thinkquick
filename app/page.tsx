@@ -1064,22 +1064,22 @@ export default function Home() {
   const researchClock = formatDigits(researchSeconds);
   const challengeTitle =
     mode === "deep-research"
-      ? "Сначала разбор. Потом речь."
+      ? "Разбери тему. Объясни просто."
       : mode === "debate"
-        ? "Защити позицию."
-      : "Говори сразу. Без подготовки.";
+        ? "Тема и позиция выпадут сами."
+      : "Сразу в речь.";
   const challengeSubtitle =
     mode === "deep-research"
-      ? `${formatDuration(researchSeconds)} на разбор темы. Потом ${formatDuration(
+      ? `${formatDuration(researchSeconds)} на подготовку, затем ${formatDuration(
           speechSeconds,
-        )} объясняешь своими словами.`
+        )} речи без шпаргалки.`
       : mode === "debate"
-        ? `Выпадет тема и сторона: за или против. У тебя ${formatDuration(
+        ? `За или против. У тебя ${formatDuration(
             speechSeconds,
-          )}, чтобы убедить зрителя.`
-      : `Крути тему и объясняй её ${formatDuration(speechSeconds)} без паузы на разбор.`;
+          )}, чтобы собрать убедительный аргумент.`
+      : `Лёгкая тема, ${formatDuration(speechSeconds)} и никакой подготовки.`;
   const challengeKicker =
-    mode === "deep-research" ? "с разбором" : mode === "debate" ? "дебаты" : "экспромт";
+    mode === "deep-research" ? "режим с разбором" : mode === "debate" ? "режим дебатов" : "режим экспромта";
   const previousTopic = topicAtOffset(activeTopics, displayTopic, -1);
   const nextTopic = topicAtOffset(activeTopics, displayTopic, 1);
   const spinStageLabel =
