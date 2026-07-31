@@ -616,13 +616,17 @@ function DurationField({
   onChangeMinutes: (minutes: number) => void;
 }) {
   const id = useId();
+  const progress = ((minutes - min) / (max - min)) * 100;
 
   return (
     <div className="duration-field">
       <div className="duration-head">
-        <label className="duration-label" htmlFor={id}>
-          {label}
-        </label>
+        <div className="duration-copy">
+          <label className="duration-label" htmlFor={id}>
+            {label}
+          </label>
+          {hint ? <p className="duration-hint">{hint}</p> : null}
+        </div>
         <span className="duration-value" aria-live="polite">
           {formatDuration(minutes * 60)}
         </span>
@@ -638,6 +642,7 @@ function DurationField({
         min={min}
         onChange={(event) => onChangeMinutes(Number(event.currentTarget.value))}
         step={1}
+        style={{ "--progress": `${progress}%` } as CSSProperties}
         type="range"
         value={minutes}
       />
@@ -645,7 +650,6 @@ function DurationField({
         <span>{min} мин</span>
         <span>{max} мин</span>
       </div>
-      {hint ? <p className="duration-hint">{hint}</p> : null}
     </div>
   );
 }
@@ -674,7 +678,7 @@ function SettingsDialog({
   const panelRef = useRef<HTMLDivElement | null>(null);
   const dialogId = useId();
   const titleId = useId();
-  const muteId = useId();
+  const soundId = useId();
 
   const close = useCallback(() => {
     setOpen(false);
@@ -741,37 +745,49 @@ function SettingsDialog({
                   Настройки
                 </h2>
                 <p className="settings-panel-blurb">
-                  Длительность таймеров в целых минутах.
+                  Таймеры челленджа и звук рулетки.
                 </p>
               </header>
 
-              <DurationField
-                hint="Для экспромта и дебатов"
-                label="Речь"
-                max={10}
-                min={1}
-                minutes={Math.round(speechSeconds / 60)}
-                onChangeMinutes={(minutes) => onChangeSpeech(minutes * 60)}
-              />
-              <DurationField
-                hint="Только для режима с разбором"
-                label="Разбор"
-                max={60}
-                min={1}
-                minutes={Math.round(researchSeconds / 60)}
-                onChangeMinutes={(minutes) => onChangeResearch(minutes * 60)}
-              />
-
-              <div className="settings-mute">
-                <input
-                  checked={muted}
-                  id={muteId}
-                  onChange={(event) => onChangeMuted(event.currentTarget.checked)}
-                  type="checkbox"
+              <div className="settings-list">
+                <DurationField
+                  hint="Экспромт, дебаты и финальная речь после разбора."
+                  label="Время речи"
+                  max={10}
+                  min={1}
+                  minutes={Math.round(speechSeconds / 60)}
+                  onChangeMinutes={(minutes) => onChangeSpeech(minutes * 60)}
                 />
-                <label htmlFor={muteId}>Выключить звуки</label>
+                <DurationField
+                  hint="Только для режима «С разбором»."
+                  label="Подготовка"
+                  max={60}
+                  min={1}
+                  minutes={Math.round(researchSeconds / 60)}
+                  onChangeMinutes={(minutes) => onChangeResearch(minutes * 60)}
+                />
+
+                <label className="settings-toggle" htmlFor={soundId}>
+                  <span className="settings-toggle-copy">
+                    <span className="settings-toggle-title">Звук рулетки</span>
+                    <span className="settings-toggle-hint">
+                      Щелчки при прокрутке и финальный акцент.
+                    </span>
+                  </span>
+                  <input
+                    checked={!muted}
+                    className="sr-only"
+                    id={soundId}
+                    onChange={(event) => onChangeMuted(!event.currentTarget.checked)}
+                    type="checkbox"
+                  />
+                  <span className="settings-switch" aria-hidden="true">
+                    <span />
+                  </span>
+                </label>
               </div>
-              <p className="settings-note">Сохраним для следующего раза.</p>
+
+              <p className="settings-note">Сохраняется в этом браузере.</p>
               <button className="btn primary settings-done" onClick={close} type="button">
                 Готово
               </button>
