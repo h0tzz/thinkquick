@@ -1494,18 +1494,6 @@ export default function Home() {
             <h2 className="challenge-title">{challengeTitle}</h2>
             <p className="challenge-subtitle">{challengeSubtitle}</p>
           </div>
-
-          <div className="challenge-clock" aria-label={`Время речи ${formatDuration(speechSeconds)}`}>
-            <span className="challenge-clock-label">речь</span>
-            <strong>{speechClock}</strong>
-            {mode === "deep-research" ? (
-              <span className="challenge-clock-note">разбор {researchClock}</span>
-            ) : mode === "debate" ? (
-              <span className="challenge-clock-note">за / против</span>
-            ) : (
-              <span className="challenge-clock-note">без подготовки</span>
-            )}
-          </div>
         </div>
 
         <div className="stage-body challenge-body">
