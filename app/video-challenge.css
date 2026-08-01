@@ -41,13 +41,13 @@ body {
   align-items: center;
   justify-content: flex-start;
   gap: 0;
-  width: min(1040px, 100%);
+  width: auto;
   margin-bottom: 0;
   text-align: left;
-  position: absolute;
-  top: clamp(1.35rem, 3.2vh, 2.05rem);
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed;
+  top: clamp(1.05rem, 2.8vh, 1.45rem);
+  left: max(1.25rem, env(safe-area-inset-left, 0px));
+  transform: none;
   z-index: 4;
   pointer-events: none;
   animation: none;
@@ -127,7 +127,11 @@ body {
 .challenge-stage {
   width: min(1040px, 100%);
   gap: 0.5rem;
+  min-height: calc(100svh - 3.1rem);
   padding-top: clamp(2.2rem, 4.8vh, 3rem);
+  position: relative;
+  animation: none;
+  transform: none;
 }
 
 .challenge-topbar {
@@ -296,7 +300,14 @@ body {
 
 .challenge-body {
   gap: 0.65rem;
-  margin-top: clamp(1.75rem, 3.8vh, 2.6rem);
+  width: min(1040px, calc(100vw - 2rem));
+  min-height: clamp(8.8rem, 15.5vw, 11.4rem);
+  margin-top: 0;
+  position: fixed;
+  left: 50%;
+  top: calc(50% - 1.9rem);
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
 .challenge-controls {
@@ -309,6 +320,13 @@ body {
 
 .challenge-controls .mode-blurb {
   display: none;
+}
+
+.challenge-body > .actions {
+  position: absolute;
+  top: calc(50% + clamp(5.3rem, 9.8vw, 6.9rem));
+  left: 0;
+  right: 0;
 }
 
 .challenge-reel {
@@ -327,6 +345,17 @@ body {
   isolation: isolate;
   box-shadow: none;
   transition: transform 0.25s cubic-bezier(0.18, 0.82, 0.18, 1);
+}
+
+.challenge-reel .roulette-status {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - clamp(5.5rem, 10vw, 7.2rem));
+  transform: translateX(-50%);
+}
+
+.challenge-reel .reveal-stage {
+  min-height: clamp(8.8rem, 15.5vw, 11.4rem);
 }
 
 .challenge-reel:disabled {
