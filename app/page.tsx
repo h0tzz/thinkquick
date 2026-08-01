@@ -1514,96 +1514,97 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="stage-body challenge-body">
-          <div className="controls challenge-controls">
-            {mode === "off-the-cuff" ? (
-              <NicheSelect value={niche} disabled={isBusy} onChange={changeNiche} />
-            ) : null}
-          </div>
+      </section>
 
-          <button
-            aria-label={
-              isSpinning
-                ? "Рулетка крутится"
-                : selectedTopic
-                  ? mode === "debate" && currentDebatePosition
-                    ? `Тема выбрана: ${selectedTopic}. Позиция: ${currentDebatePosition.label}. Крутить ещё`
-                    : `Тема выбрана: ${selectedTopic}. Крутить ещё`
-                  : "Крутить тему"
-            }
-            className={`reel challenge-reel is-${spinStage} ${isSpinning ? "is-spinning" : ""} ${
-              isLanded ? "is-landed" : ""
-            }`}
-            disabled={controlsDisabled}
-            onClick={spin}
-            aria-keyshortcuts="Enter Space"
-            type="button"
-          >
-            <div className="roulette-status" aria-hidden="true">
-              <span className="roulette-dot" />
-              <span>{spinStageLabel}</span>
-            </div>
-            <div className="reveal-stage">
-              <span className="reveal-flash" aria-hidden="true" />
-              <span className="reel-ghost is-prev" aria-hidden="true">
-                {previousTopic}
-              </span>
-              <p
-                className={`reel-phrase ${topicLengthClass(displayTopic)}`}
-                key={reelKey}
-              >
-                {displayTopic || "Тема"}
-              </p>
-              <span className="reel-ghost is-next" aria-hidden="true">
-                {nextTopic}
-              </span>
-            </div>
-            {mode === "debate" ? (
-              <div
-                className={`debate-position ${currentDebatePosition?.tone ?? ""}`}
-                aria-hidden={!currentDebatePosition}
-              >
-                <span>позиция</span>
-                <strong>{currentDebatePosition?.short ?? "?"}</strong>
-              </div>
-            ) : null}
-            {isLanded ? (
-              <div className="casino-sparks" aria-hidden="true">
-                {Array.from({ length: 10 }, (_, index) => (
-                  <span key={index} />
-                ))}
-              </div>
-            ) : null}
-            <p className="sr-only" aria-live="polite">
-              {selectedTopicLabel
-                ? mode === "debate"
-                  ? `Твоя тема и позиция: ${selectedTopicLabel}`
-                  : `Твоя тема: ${selectedTopicLabel}`
-                : ""}
-            </p>
-          </button>
-
-          {selectedTopic ? (
-            <div className="actions">
-              <div className="actions-main" aria-disabled={isBusy || undefined}>
-                <button className="btn primary" disabled={isBusy} onClick={spin} type="button">
-                  <Shuffle className="btn-icon" aria-hidden="true" />
-                  {isSpinning ? "Крутится..." : selectedTopic ? "Крутить ещё" : "Крутить"}
-                </button>
-                <button
-                  className="btn secondary"
-                  disabled={!selectedTopic || isBusy}
-                  onClick={startTimer}
-                  type="button"
-                >
-                  <Play className="btn-icon" aria-hidden="true" />
-                  {primaryLabel}
-                </button>
-              </div>
-            </div>
+      <div className="stage-body challenge-body">
+        <div className="controls challenge-controls">
+          {mode === "off-the-cuff" ? (
+            <NicheSelect value={niche} disabled={isBusy} onChange={changeNiche} />
           ) : null}
         </div>
-      </section>
+
+        <button
+          aria-label={
+            isSpinning
+              ? "Рулетка крутится"
+              : selectedTopic
+                ? mode === "debate" && currentDebatePosition
+                  ? `Тема выбрана: ${selectedTopic}. Позиция: ${currentDebatePosition.label}. Крутить ещё`
+                  : `Тема выбрана: ${selectedTopic}. Крутить ещё`
+                : "Крутить тему"
+          }
+          className={`reel challenge-reel is-${spinStage} ${isSpinning ? "is-spinning" : ""} ${
+            isLanded ? "is-landed" : ""
+          }`}
+          disabled={controlsDisabled}
+          onClick={spin}
+          aria-keyshortcuts="Enter Space"
+          type="button"
+        >
+          <div className="roulette-status" aria-hidden="true">
+            <span className="roulette-dot" />
+            <span>{spinStageLabel}</span>
+          </div>
+          <div className="reveal-stage">
+            <span className="reveal-flash" aria-hidden="true" />
+            <span className="reel-ghost is-prev" aria-hidden="true">
+              {previousTopic}
+            </span>
+            <p
+              className={`reel-phrase ${topicLengthClass(displayTopic)}`}
+              key={reelKey}
+            >
+              {displayTopic || "Тема"}
+            </p>
+            <span className="reel-ghost is-next" aria-hidden="true">
+              {nextTopic}
+            </span>
+          </div>
+          {mode === "debate" ? (
+            <div
+              className={`debate-position ${currentDebatePosition?.tone ?? ""}`}
+              aria-hidden={!currentDebatePosition}
+            >
+              <span>позиция</span>
+              <strong>{currentDebatePosition?.short ?? "?"}</strong>
+            </div>
+          ) : null}
+          {isLanded ? (
+            <div className="casino-sparks" aria-hidden="true">
+              {Array.from({ length: 10 }, (_, index) => (
+                <span key={index} />
+              ))}
+            </div>
+          ) : null}
+          <p className="sr-only" aria-live="polite">
+            {selectedTopicLabel
+              ? mode === "debate"
+                ? `Твоя тема и позиция: ${selectedTopicLabel}`
+                : `Твоя тема: ${selectedTopicLabel}`
+              : ""}
+          </p>
+        </button>
+
+        {selectedTopic ? (
+          <div className="actions">
+            <div className="actions-main" aria-disabled={isBusy || undefined}>
+              <button className="btn primary" disabled={isBusy} onClick={spin} type="button">
+                <Shuffle className="btn-icon" aria-hidden="true" />
+                {isSpinning ? "Крутится..." : selectedTopic ? "Крутить ещё" : "Крутить"}
+              </button>
+              <button
+                className="btn secondary"
+                disabled={!selectedTopic || isBusy}
+                onClick={startTimer}
+                type="button"
+              >
+                <Play className="btn-icon" aria-hidden="true" />
+                {primaryLabel}
+              </button>
+            </div>
+          </div>
+        ) : null}
+      </div>
 
       {timerOpen ? (
         <div
