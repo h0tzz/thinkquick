@@ -325,7 +325,7 @@ body {
 
 .challenge-body > .actions {
   position: absolute;
-  top: calc(50% + clamp(5.3rem, 9.8vw, 6.9rem));
+  top: calc(50% + clamp(6.2rem, 10.8vw, 7.8rem));
   left: 0;
   right: 0;
 }
@@ -446,6 +446,10 @@ body {
 
 .challenge-reel.is-spinning .roulette-dot {
   animation: roulette-dot 0.42s linear infinite;
+}
+
+.challenge-reel.is-landed .roulette-status {
+  opacity: 0;
 }
 
 .reveal-stage {
