@@ -39,11 +39,11 @@ body {
 .challenge-brand {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: clamp(0.8rem, 2vw, 1.4rem);
   width: min(1040px, 100%);
-  margin-bottom: clamp(1.05rem, 2.7vh, 1.65rem);
-  text-align: center;
+  margin-bottom: clamp(2.1rem, 5vh, 3.3rem);
+  text-align: left;
 }
 
 .brand-lockup {
@@ -62,14 +62,18 @@ body {
 }
 
 .challenge-brand .brand-mark {
-  max-width: min(92vw, 13em);
-  font-size: clamp(1.85rem, 4vw, 2.85rem);
+  max-width: none;
+  color: #f6eee7d9;
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.35vw, 1.08rem);
+  font-weight: 720;
   letter-spacing: 0;
-  line-height: 0.98;
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
 .challenge-brand .brand-mark span {
-  display: block;
+  display: inline;
 }
 
 .challenge-brand .brand-line {
@@ -114,7 +118,7 @@ body {
 
 .challenge-stage {
   width: min(1040px, 100%);
-  gap: 0.65rem;
+  gap: 0.5rem;
 }
 
 .challenge-topbar {
@@ -122,16 +126,19 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  width: 100%;
-  margin-bottom: clamp(1rem, 2.8vh, 1.85rem);
+  width: auto;
+  min-width: 0;
+  margin-left: auto;
+  margin-bottom: 0;
 }
 
 .challenge-topbar .mode-switch {
   --tab-pad: 0.35rem;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  width: min(100%, 34rem);
-  min-height: 3.15rem;
+  width: min(56vw, 34rem);
+  min-width: 28rem;
+  min-height: 2.8rem;
   padding: var(--tab-pad);
   overflow: hidden;
   background: linear-gradient(180deg, #f6eee712, #f6eee706);
@@ -151,11 +158,11 @@ body {
 
 .challenge-topbar .mode-option {
   min-width: 0;
-  min-height: 2.45rem;
-  padding: 0.62rem 0.9rem;
+  min-height: 2.1rem;
+  padding: 0.5rem 0.8rem;
   gap: 0.48rem;
   overflow: hidden;
-  font-size: 0.92rem;
+  font-size: 0.86rem;
 }
 
 .challenge-topbar .mode-option:not(.is-active):hover {
@@ -210,7 +217,7 @@ body {
   max-width: 20ch;
   color: #f6eee7;
   font-family: var(--font-display);
-  font-size: clamp(2.15rem, 4.6vw, 3.05rem);
+  font-size: clamp(2rem, 4vw, 2.85rem);
   font-weight: 520;
   letter-spacing: 0;
   line-height: 0.98;
@@ -223,7 +230,7 @@ body {
 
 .challenge-subtitle {
   max-width: 46ch;
-  margin: 0.64rem auto 0;
+  margin: 0.55rem auto 0;
   color: #f6eee796;
   font-family: var(--font-body);
   font-size: 0.95rem;
@@ -281,7 +288,7 @@ body {
 
 .challenge-body {
   gap: 0.65rem;
-  margin-top: clamp(2.25rem, 4.8vh, 3.35rem);
+  margin-top: clamp(1.75rem, 3.8vh, 2.6rem);
 }
 
 .challenge-controls {
@@ -1195,7 +1202,7 @@ body {
 
 @media (max-width: 860px) {
   .challenge-brand {
-    margin-bottom: 1rem;
+    margin-bottom: 1.7rem;
   }
 
   .challenge-hero {
@@ -1211,7 +1218,7 @@ body {
   .is-research-mode .challenge-title {
     max-width: 19ch;
     margin-inline: auto;
-    font-size: 2.18rem;
+    font-size: 2.05rem;
     line-height: 1;
   }
 
@@ -1228,7 +1235,7 @@ body {
   }
 
   .challenge-brand {
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
   }
 
   .challenge-stage {
@@ -1236,7 +1243,7 @@ body {
   }
 
   .challenge-topbar {
-    margin-bottom: 1.1rem;
+    margin-bottom: 0;
   }
 
   .challenge-title {
@@ -1294,19 +1301,24 @@ body {
   }
 
   .challenge-brand {
-    display: grid;
-    justify-items: center;
-    gap: 0.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
     text-align: center;
   }
 
   .challenge-topbar {
+    justify-content: center;
     align-items: stretch;
+    width: 100%;
+    margin-left: 0;
   }
 
   .challenge-topbar .mode-switch {
     min-width: 0;
     flex: 1;
+    width: 100%;
   }
 
   .challenge-topbar .mode-option {
@@ -1412,9 +1424,13 @@ body {
 }
 
 @media (max-width: 460px) {
+  .challenge-brand .brand-mark {
+    white-space: normal;
+  }
+
   .challenge-title,
   .is-research-mode .challenge-title {
-    font-size: 2.32rem;
+    font-size: 2rem;
   }
 
   .challenge-subtitle {

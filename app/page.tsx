@@ -1484,13 +1484,9 @@ export default function Home() {
       <header className="brand challenge-brand">
         <div className="brand-lockup">
           <h1 className="brand-mark">
-            <span>Думай быстро,</span>
-            <span>говори ясно.</span>
+            Думай быстро, говори ясно.
           </h1>
         </div>
-      </header>
-
-      <section className="stage challenge-stage" aria-label="Тренировка речи">
         <div className="challenge-topbar">
           <ModeSwitch value={mode} disabled={controlsDisabled} onChange={changeMode} />
           <SettingsDialog
@@ -1504,7 +1500,9 @@ export default function Home() {
             speechSeconds={speechSeconds}
           />
         </div>
+      </header>
 
+      <section className="stage challenge-stage" aria-label="Тренировка речи">
         <div className="challenge-hero">
           <div className="challenge-copy">
             <p className="challenge-kicker">
