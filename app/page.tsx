@@ -1550,24 +1550,27 @@ export default function Home() {
               {previousTopic}
             </span>
             <p
-              className={`reel-phrase ${topicLengthClass(displayTopic)}`}
+              className={`reel-phrase ${topicLengthClass(displayTopic)} ${
+                mode === "debate" && currentDebatePosition ? "has-debate-position" : ""
+              }`}
               key={reelKey}
             >
-              {displayTopic || "Тема"}
+              {mode === "debate" && currentDebatePosition ? (
+                <>
+                  <span className="debate-position-meta">Твоя позиция</span>
+                  <span className={`debate-side ${currentDebatePosition.tone}`}>
+                    {currentDebatePosition.short}
+                  </span>
+                  <span className="reel-topic-text">{displayTopic || "Тема"}</span>
+                </>
+              ) : (
+                <span className="reel-topic-text">{displayTopic || "Тема"}</span>
+              )}
             </p>
             <span className="reel-ghost is-next" aria-hidden="true">
               {nextTopic}
             </span>
           </div>
-          {mode === "debate" ? (
-            <div
-              className={`debate-position ${currentDebatePosition?.tone ?? ""}`}
-              aria-hidden={!currentDebatePosition}
-            >
-              <span>позиция</span>
-              <strong>{currentDebatePosition?.short ?? "?"}</strong>
-            </div>
-          ) : null}
           {isLanded ? (
             <div className="casino-sparks" aria-hidden="true">
               {Array.from({ length: 10 }, (_, index) => (
