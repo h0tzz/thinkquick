@@ -39,15 +39,23 @@ body {
 .challenge-brand {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: clamp(0.8rem, 2vw, 1.4rem);
+  justify-content: flex-start;
+  gap: 0;
   width: min(1040px, 100%);
-  margin-bottom: clamp(2.1rem, 5vh, 3.3rem);
+  margin-bottom: 0;
   text-align: left;
+  position: absolute;
+  top: clamp(1.35rem, 3.2vh, 2.05rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  pointer-events: none;
+  animation: none;
 }
 
 .brand-lockup {
   min-width: 0;
+  pointer-events: auto;
 }
 
 .brand-kicker {
@@ -119,6 +127,7 @@ body {
 .challenge-stage {
   width: min(1040px, 100%);
   gap: 0.5rem;
+  padding-top: clamp(2.2rem, 4.8vh, 3rem);
 }
 
 .challenge-topbar {
@@ -126,10 +135,9 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  width: auto;
+  width: 100%;
   min-width: 0;
-  margin-left: auto;
-  margin-bottom: 0;
+  margin: 0 auto clamp(2.25rem, 5.4vh, 3.6rem);
 }
 
 .challenge-topbar .mode-switch {
@@ -1202,7 +1210,7 @@ body {
 
 @media (max-width: 860px) {
   .challenge-brand {
-    margin-bottom: 1.7rem;
+    margin-bottom: 0;
   }
 
   .challenge-hero {
@@ -1243,7 +1251,7 @@ body {
   }
 
   .challenge-topbar {
-    margin-bottom: 0;
+    margin-bottom: clamp(2rem, 4.8vh, 3rem);
   }
 
   .challenge-title {
@@ -1303,8 +1311,11 @@ body {
   .challenge-brand {
     display: flex;
     flex-wrap: wrap;
+    position: static;
+    transform: none;
     justify-content: center;
     gap: 0.75rem;
+    margin-bottom: 0.85rem;
     text-align: center;
   }
 
