@@ -1511,18 +1511,17 @@ export default function Home() {
             </p>
             <h2 className="challenge-title">{challengeTitle}</h2>
             <p className="challenge-subtitle">{challengeSubtitle}</p>
+            {mode === "off-the-cuff" ? (
+              <div className="controls challenge-controls">
+                <NicheSelect value={niche} disabled={isBusy} onChange={changeNiche} />
+              </div>
+            ) : null}
           </div>
         </div>
 
       </section>
 
       <div className="stage-body challenge-body">
-        <div className="controls challenge-controls">
-          {mode === "off-the-cuff" ? (
-            <NicheSelect value={niche} disabled={isBusy} onChange={changeNiche} />
-          ) : null}
-        </div>
-
         <button
           aria-label={
             isSpinning
