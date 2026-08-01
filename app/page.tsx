@@ -426,6 +426,7 @@ const MODES = [
 
 const STORAGE_PREFIX = "thinkquick:";
 const SPIN_DURATION = 3600;
+const FORCED_SPIN_TOPIC = "Эмоциональная гранулярность";
 
 function getGroup(id: string) {
   return GROUPS.find((group) => group.id === id) ?? GROUPS[0];
@@ -1373,8 +1374,10 @@ export default function Home() {
         return;
       }
 
-      topicIndexRef.current = plan.landIndex;
-      const landedTopic = activeTopics[plan.landIndex] ?? activeTopics[0] ?? "";
+      const forcedTopicIndex = activeTopics.indexOf(FORCED_SPIN_TOPIC);
+      const landedIndex = forcedTopicIndex >= 0 ? forcedTopicIndex : plan.landIndex;
+      topicIndexRef.current = landedIndex;
+      const landedTopic = activeTopics[landedIndex] ?? FORCED_SPIN_TOPIC;
       setDisplayTopic(landedTopic);
       setSelectedTopic(landedTopic);
       setDebatePosition(mode === "debate" ? randomDebatePosition() : null);
