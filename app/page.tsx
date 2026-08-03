@@ -426,7 +426,7 @@ const MODES = [
 
 const STORAGE_PREFIX = "thinkquick:";
 const SPIN_DURATION = 3600;
-const FORCED_SPIN_TOPIC = "Эмоциональная гранулярность";
+const FORCED_SPIN_TOPIC = "Фундаментальная ошибка атрибуции";
 
 function getGroup(id: string) {
   return GROUPS.find((group) => group.id === id) ?? GROUPS[0];
