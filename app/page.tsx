@@ -83,6 +83,7 @@ const GROUPS: TopicGroup[] = [
       "Парадокс Ферми",
       "Принцип Парето",
       "Эмоциональная гранулярность",
+      "Тревожное избегание",
       "Теория иронических процессов (проблема белого медведя)",
       "Парадокс Соломона",
       "Аффективное прогнозирование (ошибка влияния)",
@@ -425,8 +426,8 @@ const MODES = [
 ];
 
 const STORAGE_PREFIX = "thinkquick:";
-const SPIN_DURATION = 3600;
-const FORCED_SPIN_TOPIC = "Фундаментальная ошибка атрибуции";
+const SPIN_DURATION = 2500;
+const FORCED_SPIN_TOPIC = "Тревожное избегание";
 
 function getGroup(id: string) {
   return GROUPS.find((group) => group.id === id) ?? GROUPS[0];
@@ -1377,7 +1378,7 @@ export default function Home() {
       const forcedTopicIndex = activeTopics.indexOf(FORCED_SPIN_TOPIC);
       const landedIndex = forcedTopicIndex >= 0 ? forcedTopicIndex : plan.landIndex;
       topicIndexRef.current = landedIndex;
-      const landedTopic = activeTopics[landedIndex] ?? FORCED_SPIN_TOPIC;
+      const landedTopic = FORCED_SPIN_TOPIC;
       setDisplayTopic(landedTopic);
       setSelectedTopic(landedTopic);
       setDebatePosition(mode === "debate" ? randomDebatePosition() : null);
