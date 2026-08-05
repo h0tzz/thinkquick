@@ -33,6 +33,14 @@ type TopicGroup = {
   topics: string[];
 };
 
+type ModeConfig = {
+  id: ModeId;
+  label: string;
+  emoji: string;
+  blurb: string;
+  soon?: boolean;
+};
+
 const GROUPS: TopicGroup[] = [
   {
     id: "general",
@@ -403,31 +411,44 @@ const DEBATE_POSITIONS = [
   { id: "con", label: "Против", short: "ПРОТИВ", tone: "is-con" },
 ] as const;
 
-const MODES = [
+const IS_STUDIO_BUILD = process.env.NEXT_PUBLIC_THINKQUICK_VARIANT === "studio";
+const STUDIO_FORCED_TOPIC =
+  process.env.NEXT_PUBLIC_THINKQUICK_FORCED_TOPIC?.trim() || "Тревожное избегание";
+
+const MODES: ModeConfig[] = [
   {
-    id: "deep-research" as const,
+    id: "deep-research",
     label: "С разбором",
     emoji: "🔍",
     blurb:
       "Крути тему, разбирайся в ней по таймеру, потом объясняй своими словами.",
   },
   {
-    id: "off-the-cuff" as const,
+    id: "off-the-cuff",
     label: "Экспромт",
     emoji: "🧠",
     blurb: "Минимум подготовки. Думай быстро, пока говоришь.",
   },
   {
-    id: "debate" as const,
+    id: "debate",
     label: "Дебаты",
     emoji: "⚖️",
     blurb: "Выпадает тема и сторона. Докажи позицию, даже если не согласен.",
+    soon: !IS_STUDIO_BUILD,
   },
 ];
 
 const STORAGE_PREFIX = "thinkquick:";
 const SPIN_DURATION = 2500;
-const FORCED_SPIN_TOPIC = "Тревожное избегание";
+const FORCED_SPIN_TOPIC = IS_STUDIO_BUILD ? STUDIO_FORCED_TOPIC : "";
+
+function isModeAvailable(mode: ModeConfig) {
+  return !mode.soon;
+}
+
+function isModeIdAvailable(modeId: ModeId) {
+  return isModeAvailable(MODES.find((mode) => mode.id === modeId) ?? MODES[0]);
+}
 
 function getGroup(id: string) {
   return GROUPS.find((group) => group.id === id) ?? GROUPS[0];
@@ -989,7 +1010,21 @@ function ModeSwitch({
   const activeIndex = Math.max(0, MODES.findIndex((mode) => mode.id === value));
 
   function move(nextIndex: number) {
-    const normalized = (nextIndex + MODES.length) % MODES.length;
+    const direction = nextIndex >= activeIndex ? 1 : -1;
+    let normalized = (nextIndex + MODES.length) % MODES.length;
+
+    for (let index = 0; index < MODES.length; index += 1) {
+      if (isModeAvailable(MODES[normalized])) {
+        break;
+      }
+
+      normalized = (normalized + direction + MODES.length) % MODES.length;
+    }
+
+    if (!isModeAvailable(MODES[normalized])) {
+      return;
+    }
+
     onChange(MODES[normalized].id);
     optionRefs.current[normalized]?.focus();
   }
@@ -1021,12 +1056,14 @@ function ModeSwitch({
       />
       {MODES.map((mode, index) => {
         const active = mode.id === value;
+        const modeDisabled = disabled || !isModeAvailable(mode);
 
         return (
           <button
             aria-checked={active}
-            className={`mode-option ${active ? "is-active" : ""}`}
-            disabled={disabled}
+            aria-disabled={modeDisabled}
+            className={`mode-option ${active ? "is-active" : ""} ${mode.soon ? "is-soon" : ""}`}
+            disabled={modeDisabled}
             key={mode.id}
             onClick={() => onChange(mode.id)}
             ref={(node) => {
@@ -1040,6 +1077,11 @@ function ModeSwitch({
               {mode.emoji}
             </span>
             <span className="mode-label">{mode.label}</span>
+            {mode.soon ? (
+              <span className="mode-soon" aria-label="Скоро">
+                soon
+              </span>
+            ) : null}
           </button>
         );
       })}
@@ -1307,7 +1349,7 @@ export default function Home() {
   }
 
   function changeMode(nextMode: ModeId) {
-    if (isBusy || nextMode === mode) {
+    if (isBusy || nextMode === mode || !isModeIdAvailable(nextMode)) {
       return;
     }
 
@@ -1375,10 +1417,10 @@ export default function Home() {
         return;
       }
 
-      const forcedTopicIndex = activeTopics.indexOf(FORCED_SPIN_TOPIC);
+      const forcedTopicIndex = FORCED_SPIN_TOPIC ? activeTopics.indexOf(FORCED_SPIN_TOPIC) : -1;
       const landedIndex = forcedTopicIndex >= 0 ? forcedTopicIndex : plan.landIndex;
       topicIndexRef.current = landedIndex;
-      const landedTopic = FORCED_SPIN_TOPIC;
+      const landedTopic = FORCED_SPIN_TOPIC || activeTopics[landedIndex] || activeTopics[0] || "";
       setDisplayTopic(landedTopic);
       setSelectedTopic(landedTopic);
       setDebatePosition(mode === "debate" ? randomDebatePosition() : null);
